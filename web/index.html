@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Adriatic Map</title>
+  <link rel="stylesheet" href="/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <div id="map" aria-label="Interactive map of the Adriatic Sea"></div>
+
+    <section class="map-panel" aria-labelledby="panel-title">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Coastal distance explorer</p>
+          <h1 id="panel-title">Adriatic Map</h1>
+        </div>
+        <span class="distance-badge">6 NM</span>
+      </div>
+
+      <div class="control-row overlay-control">
+        <label class="toggle-label" for="overlay-toggle">
+          <input id="overlay-toggle" type="checkbox" checked>
+          <span>Show coastal zone</span>
+        </label>
+        <span class="distance-detail">11,112 m</span>
+      </div>
+
+      <label class="slider-label" for="opacity-slider">
+        <span>Overlay opacity</span>
+        <output id="opacity-value" for="opacity-slider">45%</output>
+      </label>
+      <input id="opacity-slider" type="range" min="0" max="100" value="45" step="5">
+
+      <div class="view-buttons" aria-label="Map views">
+        <button id="view-adriatic" type="button">Full Adriatic</button>
+        <button id="view-dalmatia" type="button">Dalmatia</button>
+      </div>
+
+      <p id="overlay-status" class="status-message" role="status" aria-live="polite">Loading coastal zone…</p>
+      <details class="map-info">
+        <summary>Data and accuracy</summary>
+        <p id="data-summary">Loading generation metadata…</p>
+        <p>OpenStreetMap-derived geometry is for informational visualization only.</p>
+      </details>
+    </section>
+
+    <aside class="navigation-notice">
+      Informational visualization only. Not an official nautical chart or a substitute for official navigational data.
+    </aside>
+  </main>
+
+  <script src="/vendor/leaflet/leaflet.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -52,6 +52,21 @@ Repeated commands will receive checked-in helper scripts. Exact commands and req
 package-install instructions will be added and verified during implementation, rather
 than guessed during planning.
 
+## Verified application commands
+
+```bash
+./scripts/test.sh
+./scripts/build-release.sh
+go run ./cmd/adriatic-map
+curl -sS http://127.0.0.1:8080/healthz
+```
+
+The test script uses ignored project-local Go build/module caches, runs all Go tests,
+runs `go vet`, and checks the working diff for whitespace errors. The release script
+cross-builds Linux amd64 and Windows amd64 binaries into ignored `dist/` and prints
+SHA-256 checksums. The server binds only to loopback by default and opens the system
+browser; use `-open=false` in automated or headless environments.
+
 ## Proposed release model
 
 - Source stays small and public.

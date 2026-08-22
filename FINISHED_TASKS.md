@@ -32,6 +32,19 @@ a status record, not a duplicate of the chronological changelog.
 - Approved tracked reviewed generated data when practical, SemVer from `0.1.0`, and
   multiline commits for each coherent implementation pass.
 
+### 2026-08-22 — Application shell 0.1.0
+
+- Implemented the standard-library Go server with an embedded responsive Leaflet UI,
+  runtime health/version endpoint, graceful shutdown, and optional browser launch.
+- Added pan/zoom, overlay visibility and opacity controls, full-Adriatic and Dalmatia
+  views, visible OSM attribution, data status, and the navigation disclaimer.
+- Vendored checksum-verified Leaflet 1.9.4 assets and its BSD 2-Clause license.
+- Added an explicitly empty placeholder GeoJSON rather than invented geometry.
+- Added Go endpoint/header/static-asset tests, JavaScript syntax validation, project
+  test/build helpers, and verified Linux/Windows amd64 cross-builds.
+- Smoke-tested the built Linux server on a free loopback port and confirmed its HTML,
+  health endpoint, security headers, embedded data, and clean shutdown.
+
 ## Deferred by scope
 
 - Configurable/multiple buffer distances, point inspection, vector tiles, and offline

@@ -21,7 +21,8 @@ Before changing code, data, build scripts, or workflow, read in full:
 6. `TODO.md`
 7. the latest `CHANGELOG.md` entries
 8. `LICENSE`
-9. `INITIAL_PROMPT.md` for historical context only
+9. `THIRD_PARTY_NOTICES.md`
+10. `INITIAL_PROMPT.md` for historical context only
 
 The generic `codex-coding-rules` rulebook also applies. Current user instructions
 override these files.
@@ -66,6 +67,13 @@ downloads and intermediates out of Git.
   code/release pass.
 - Before reporting completion, run the documented format/test/build commands, then
   review `git status --short` and the full diff.
+
+Current application commands:
+
+- Test and vet: `./scripts/test.sh`
+- Build Linux and Windows release binaries: `./scripts/build-release.sh`
+- Run from source: `go run ./cmd/adriatic-map`
+- Runtime health/version check: `curl -sS http://127.0.0.1:8080/healthz`
 
 ## Git workflow
 

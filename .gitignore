@@ -25,6 +25,8 @@ dist/
 *.exe
 *.test
 coverage.out
+.gocache/
+.gomodcache/
 
 # Python GIS tooling: local environments, caches, and reports
 .venv/

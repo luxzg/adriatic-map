@@ -31,3 +31,16 @@ All notable code, data, documentation, and workflow changes are recorded here.
   policy, versioning, and per-pass commit workflow.
 - Converted the TODO from unresolved decisions to active implementation work.
 - No application code was included in this documentation checkpoint.
+
+## 0.1.0 - 2026-08-22 18:32 CEST
+
+- Added a small standard-library Go server with embedded browser and data assets,
+  graceful shutdown, automatic browser launch, and a health/version endpoint.
+- Added the responsive English Leaflet UI with pan/zoom, fixed 6 NM display, overlay
+  toggle, opacity slider, full-Adriatic and Dalmatia views, visible OSM attribution,
+  generation status, and informational-use warning.
+- Vendored checksum-verified Leaflet 1.9.4 under its BSD 2-Clause license.
+- Added a deliberately empty placeholder overlay so no invented geometry is displayed
+  before the reproducible GIS output is ready.
+- Added repeatable tests, vet/check workflow, Linux/Windows amd64 builds, JavaScript
+  syntax validation, and a successful loopback server smoke test.

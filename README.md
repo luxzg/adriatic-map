@@ -10,9 +10,10 @@ from mainland coasts, islands, and islets represented in published geographic da
 
 ## Status
 
-The documentation and implementation direction are approved. Application and data
-pipeline work is underway. See [PROJECT_OUTLINE.md](PROJECT_OUTLINE.md) for the v1
-scope and [TODO.md](TODO.md) for active work.
+Version 0.1.0 provides the tested application shell and an intentionally empty
+placeholder overlay. The reproducible GIS pipeline and real 6 NM overlay are still
+being implemented. See [PROJECT_OUTLINE.md](PROJECT_OUTLINE.md) for the v1 scope and
+[TODO.md](TODO.md) for active work.
 
 ## Planned v1
 
@@ -41,11 +42,41 @@ The application code and original project content are licensed under
 by their applicable ODbL terms. See [docs/DATA.md](docs/DATA.md) for the proposed data
 workflow and limitations.
 
-## Running and development
+## Run from source
 
-Startup, build, test, and data-generation commands will be added only after the
-architecture is approved and the corresponding scripts have been implemented and
-verified. Planning and repository setup are documented in
+Go 1.26 or newer is required:
+
+```bash
+go run ./cmd/adriatic-map
+```
+
+The server listens on <http://127.0.0.1:8080/> and opens the default browser. Use
+`-open=false` to suppress browser launch or `-listen 127.0.0.1:9000` to select a
+different local port. Stop it with Ctrl+C.
+
+## Build and test
+
+On Linux, run the complete test/vet/check workflow and build both platform binaries:
+
+```bash
+./scripts/test.sh
+./scripts/build-release.sh
+```
+
+Outputs are written to ignored `dist/`:
+
+- `adriatic-map-linux-amd64`
+- `adriatic-map-windows-amd64.exe`
+
+On Windows PowerShell with Go installed:
+
+```powershell
+.\scripts\build-windows.ps1
+.\dist\adriatic-map-windows-amd64.exe
+```
+
+Release binaries contain the UI and overlay data and require no database or Python.
+The basemap requires internet access. Planning and deeper setup are documented in
 [PROJECT_SETUP.md](PROJECT_SETUP.md).
 
 ## AI assistance

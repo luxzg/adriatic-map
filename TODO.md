@@ -6,7 +6,6 @@ Only active work belongs here.
 
 - Initialize Git on `main`, add/verify the supplied GitHub remote, review public files,
   then create and push the approved documentation checkpoint.
-- Implement and verify the minimal Go/Leaflet vertical slice and helper scripts.
 - Implement the reproducible Python/GDAL GIS tool and document its prerequisites.
 - Implement the data pipeline, metadata, and automated GIS validation suite.
 - Generate, measure, visually review, and license-review the 6 NM overlay.
