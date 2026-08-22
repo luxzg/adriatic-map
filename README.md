@@ -62,6 +62,11 @@ loopback port, for example `./scripts/run.sh -listen 127.0.0.1:9000`. Port `0` a
 the operating system to choose a free port and the application prints and opens the
 resulting URL. Stop it with Ctrl+C.
 
+An internet connection is required to display the OpenStreetMap background map. The
+application and coastal-distance overlays are embedded locally, but without internet
+access the OSM background will show missing/blank tiles. Offline basemap packaging is
+not supported or planned.
+
 ## Build and test
 
 On Linux, run the complete test/vet/check workflow and build both platform binaries:
@@ -112,6 +117,9 @@ Generation prints the active band and GIS phase as work progresses. After every 
 it reports generation, validation, and combined elapsed time; a final line reports the
 total time for all five bands. Individual source polygons are not logged because the
 pipeline processes thousands of them as aggregate geometry.
+
+A user-validated complete regeneration on the documented Linux system took 7 minutes
+22 seconds. Actual time depends on CPU and storage performance.
 
 The 925 MB raw archive is stored inside this project at
 `data/raw/land-polygons-split-4326.zip`, not in a temporary directory. It remains

@@ -80,6 +80,10 @@ active GIS phase, reports generation and validation time for each band, and repo
 total elapsed time after all five bands complete. Timing uses whole seconds at the
 shell level and tenths of a second for the internal GIS phases.
 
+The user ran and accepted the complete helper on Linux on 2026-08-22. All five bands
+generated and validated in 7m 22s with zero validation mismatches. Overlay geometry and
+statistics remained unchanged; only generation/validation audit timestamps changed.
+
 Use these helpers instead of ad hoc command chains for normal work. The run helper
 passes application flags through unchanged, so the listen address is configurable and
 no test needs to assume that a fixed port is free. The smoke helper builds the release

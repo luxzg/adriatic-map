@@ -109,14 +109,20 @@ a status record, not a duplicate of the chronological changelog.
   and all-band elapsed times to the standard generation helper.
 - Changed the default overlay color to `#0e0af5` and kept badge text readable across
   light and dark user-selected colors.
+- User-ran and accepted the complete five-band generation workflow: 7m 22s total,
+  readable progress output, and zero validation mismatches for every band.
 
 ## Deliberately not planned
 
 - A separate rock/seamark layer, because the accepted coastline polygons already
   provide the intended land definition and mixed hazard semantics add complexity.
 - Offline basemap packaging, because normal viewport-only OSM tile access meets the
-  intended connected local use without a large tile archive.
+  intended connected local use without a large tile archive. Internet access remains
+  required for the OSM background map.
 - Multiple detail levels or vector tiles, because the compact GeoJSON overlays already
   perform adequately.
-- Dynamic source updates or a database, because the reviewed static snapshot and
-  reproducible offline generation cover the intended use.
+- Dynamic source updates or a database, because the Adriatic coastline is stable
+  enough for the intended distance-band visualization and deliberate reproducible
+  offline generation is sufficient.
+- Exact on-click distance calculation, because membership in the five precomputed
+  bands is accurate enough for the intended inspection workflow.

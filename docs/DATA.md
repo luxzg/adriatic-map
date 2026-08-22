@@ -87,6 +87,11 @@ The authoritative machine-readable records are `data/generated/metadata.json` fo
 `data/generated/overlays.json` is the runtime catalog. The generated overlays are
 accompanied by `data/generated/NOTICE.md` and remain governed by ODbL 1.0.
 
+The user repeated the complete five-band generation and validation workflow on Linux
+on 2026-08-22. It completed in 7m 22s, every band again had zero grid mismatches, and
+the GeoJSON outputs, areas, and checksums remained unchanged. The tracked metadata
+audit timestamps record this later successful run.
+
 The 925 MB archive remains locally reusable at the ignored project path
 `data/raw/land-polygons-split-4326.zip`; it was not downloaded to or removed from a
 temporary directory. `data/raw/README.md` keeps the directory and provenance visible

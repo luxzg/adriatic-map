@@ -46,6 +46,10 @@ restrictions, and official current sources remain authoritative.
 Do not add a separate rock layer, offline basemap, multiple detail levels/vector tiles,
 dynamic data updates, or a database unless the user explicitly reverses the current
 decision. The accepted coastline overlay is adequate and the project must stay simple.
+Do not reopen these as routine suggestions. The embedded application and overlays work
+locally, but the OSM background map requires internet access and may show blank tiles
+when offline. Point inspection remains a precomputed-band membership check; do not add
+exact on-click distance calculation.
 
 ## Public-repository and data safety
 
@@ -127,6 +131,9 @@ Current application commands:
   informational map. The user later confirmed version 0.2.0 distance zones, color
   selection, and point inspection work on Linux. Windows runtime behavior remains
   untested by the user.
+- The user completed and accepted the version 0.2.1 five-band generation workflow on
+  Linux in 7m 22s. All bands validated with zero mismatches, progress/timing output was
+  readable, and regeneration changed only audit timestamps—not overlay geometry.
 - The reusable 925,340,242-byte source archive lives at
   `data/raw/land-polygons-split-4326.zip`, inside the project rather than a temporary
   directory. It is intentionally ignored and must not be staged. Its provenance,

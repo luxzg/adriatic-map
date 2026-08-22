@@ -51,11 +51,13 @@ acceptance gate. EPSG:3857 is not used for the distance calculation.
   a clear and useful land definition; ambiguous rock semantics add complexity without
   a current need.
 - Offline basemap packages: the application intentionally requests ordinary OSM tiles
-  for the visible viewport and does not ship or bulk-download a separate tile archive.
+  for the visible viewport and does not ship or bulk-download a separate tile archive;
+  internet access is therefore required for the background map.
 - Multiple detail levels or vector tiles: the five compact GeoJSON files perform well
   enough without another data format or selection system.
-- Dynamic source updates or a database: the reviewed static coastline snapshot and
-  reproducible offline generation cover the intended use.
+- Dynamic source updates or a database: the Adriatic coastline is sufficiently stable
+  for this purpose, and the reviewed static snapshot plus deliberate reproducible
+  offline generation cover the intended use.
 
 ## Explicit non-goals
 

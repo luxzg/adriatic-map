@@ -5,7 +5,7 @@
   "buffer_quadrant_segments": 24,
   "coordinate_precision_degrees": 1e-06,
   "generated": true,
-  "generated_at": "2026-08-22T17:51:44+00:00",
+  "generated_at": "2026-08-22T20:29:16+00:00",
   "metric_crs_proj4": "+proj=aeqd +lat_0=43 +lon_0=16 +datum=WGS84 +units=m +no_defs +type=crs",
   "navigation_use": false,
   "output_area_square_kilometres": 99073.399,
@@ -32,7 +32,7 @@
     "proj": "9.8.1",
     "python": "3.13.12"
   },
-  "validated_at": "2026-08-22T17:52:03+00:00",
+  "validated_at": "2026-08-22T20:29:35+00:00",
   "validation": {
     "classification_tolerance_metres": 141.962,
     "corridor_sample": {

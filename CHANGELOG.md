@@ -2,6 +2,20 @@
 
 All notable code, data, documentation, and workflow changes are recorded here.
 
+## Documentation and validation - 2026-08-22 22:32 CEST
+
+- Recorded the user's successful full five-band regeneration on Linux, completing in
+  7m 22s with readable progress/timing output and zero validation mismatches.
+- Preserved the regenerated metadata audit timestamps; overlay geometry, areas,
+  checksums, and all other metadata remained unchanged.
+- Confirmed internet access is required only for the OSM background map; the local
+  application and simplified precomputed overlays remain embedded.
+- Finalized the decisions against offline basemap packaging, a rock/seamark layer,
+  tiled/alternate overlay detail levels, dynamic coastline updates/a database, and
+  exact on-click distance calculations.
+- No application behavior or geometry changed, so the version remains 0.2.1. Windows
+  runtime testing remains the only active TODO.
+
 ## 0.2.1 - 2026-08-22 20:29 CEST
 
 - Added visible, flushed phase progress while each coastal-distance band loads source
