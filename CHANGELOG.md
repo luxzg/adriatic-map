@@ -57,3 +57,21 @@ All notable code, data, documentation, and workflow changes are recorded here.
   0.076324%, below the 0.5% gate.
 - Documented the 925 MB source archive, maintainer prerequisites, fixed v1 parameters,
   ignored raw-data workflow, and regeneration commands.
+
+## 0.1.2 - 2026-08-22 18:57 CEST
+
+- Replaced the empty placeholder with the reviewed 1.1 MB Adriatic 6 NM marine
+  overlay generated from the current OSM-derived coastline land polygons.
+- Added source-to-output validation for 252 regional grid points, open sea, land, a
+  Dalmatian corridor, and retention of a coastal zone around a small source islet.
+- Recorded the source URL, published and retrieval timestamps, archive size and
+  SHA-256, Python/GDAL/PROJ versions, processing parameters, output statistics,
+  projection error, and validation results in shipped metadata.
+- Added the ODbL generated-data notice to the embedded application, exposed data and
+  method links in the UI, and integrated full validation into generation and routine
+  tests whenever the ignored source archive is locally available.
+- Documented the reviewed snapshot, measured accuracy, known limitations, build/run
+  workflow, and remaining user browser-validation checklist.
+- Rebuilt Linux amd64 and Windows amd64 executables and smoke-tested the Linux binary,
+  including its health response, security headers, UI, exact embedded overlay,
+  metadata, data notice, version, and clean shutdown.

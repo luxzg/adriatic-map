@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -72,6 +73,41 @@ class CoastalBufferTests(unittest.TestCase):
         properties = document["features"][0]["properties"]
         self.assertEqual(properties["distance_m"], 11112)
         self.assertEqual(properties["license"], "ODbL-1.0")
+
+    def test_metadata_records_source_provenance_and_tool_versions(self) -> None:
+        statistics = coastal.BuildStatistics(
+            source_features=2,
+            source_polygons=3,
+            output_area_square_kilometres=4.5,
+            output_bounds=(11.4, 39.0, 20.7, 46.1),
+            projection_max_relative_error_percent=0.1,
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "source.zip"
+            metadata_path = Path(directory) / "metadata.json"
+            source.write_bytes(b"source data")
+            retrieved_timestamp = 1_700_000_000
+            os.utime(source, (retrieved_timestamp, retrieved_timestamp))
+            coastal.write_metadata(
+                metadata_path,
+                source,
+                "https://example.invalid/source.zip",
+                "2026-08-22T03:36:41Z",
+                6,
+                11112,
+                50,
+                statistics,
+            )
+            metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+            expected_sha256 = coastal.sha256_file(source)
+
+        self.assertEqual(metadata["source_archive_bytes"], 11)
+        self.assertEqual(metadata["source_retrieved_at"], "2023-11-14T22:13:20+00:00")
+        self.assertEqual(metadata["source_date"], "2026-08-22T03:36:41Z")
+        self.assertEqual(metadata["source_sha256"], expected_sha256)
+        self.assertRegex(metadata["tool_versions"]["python"], r"^\d+\.\d+\.\d+")
+        self.assertIn("GDAL", metadata["tool_versions"]["gdal"])
+        self.assertRegex(metadata["tool_versions"]["proj"], r"^\d+\.\d+\.\d+$")
 
 
 if __name__ == "__main__":

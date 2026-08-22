@@ -1,6 +1,6 @@
 # Adriatic Map
 
-Adriatic Map is a planned small cross-platform web application for exploring the
+Adriatic Map is a small cross-platform web application for exploring the
 parts of the Adriatic Sea that are within a mathematically calculated distance of
 the nearest exposed land. The first target is **6 nautical miles (11,112 metres)**
 from mainland coasts, islands, and islets represented in published geographic data.
@@ -10,13 +10,13 @@ from mainland coasts, islands, and islets represented in published geographic da
 
 ## Status
 
-Version 0.1.1 provides the tested application shell and reproducible Python/GDAL GIS
-pipeline. The committed overlay is still an intentionally empty placeholder while the
-real source-data generation and review are underway. See
-[PROJECT_OUTLINE.md](PROJECT_OUTLINE.md) for the v1 scope and [TODO.md](TODO.md) for
-active work.
+Version 0.1.2 provides the complete first prototype: the tested local application,
+the reviewed 6 NM overlay generated from OSM-derived coastline land polygons, and the
+reproducible Python/GDAL pipeline used to build and validate it. See
+[PROJECT_OUTLINE.md](PROJECT_OUTLINE.md) for the v1 scope and [docs/DATA.md](docs/DATA.md)
+for the exact data method and limitations.
 
-## Planned v1
+## Included in v1
 
 - Interactive Adriatic map with pan and zoom.
 - A precomputed, merged 6 NM coastal-distance overlay.
@@ -26,22 +26,23 @@ active work.
 - Reproducible offline preprocessing; no large live Overpass request at startup.
 - Linux and Windows operation without a database.
 
-The selected architecture is a tiny Go executable that serves an embedded local
-Leaflet frontend and a prepared overlay. A separate Python GIS tool would regenerate
-the overlay; end users would not need Python or GIS packages.
+The application is a tiny Go executable that serves an embedded local Leaflet
+frontend and prepared overlay. A separate Python GIS tool regenerates the overlay;
+end users do not need Python or GIS packages.
 
 ## Data and attribution
 
-The preferred land source is the OSM-derived coastline polygon dataset published at
+The land source is the OSM-derived coastline polygon dataset published at
 [osmdata.openstreetmap.de](https://osmdata.openstreetmap.de/data/land-polygons.html).
 OpenStreetMap data is © OpenStreetMap contributors and licensed under the
 [ODbL 1.0](https://www.openstreetmap.org/copyright). A normal interactive OSM
-basemap is proposed for v1 and will retain visible attribution.
+basemap is used for v1 and retains visible attribution.
 
 The application code and original project content are licensed under
 [GPL-3.0-or-later](LICENSE). OSM inputs and generated OSM-derived data remain governed
-by their applicable ODbL terms. See [docs/DATA.md](docs/DATA.md) for the proposed data
-workflow and limitations.
+by their applicable ODbL terms. See [docs/DATA.md](docs/DATA.md) and the shipped
+[generated-data notice](data/generated/NOTICE.md) for the data workflow, provenance,
+validation, and limitations.
 
 ## Run from source
 
@@ -93,8 +94,10 @@ source archive:
 ```
 
 The download helper never overwrites an existing source archive. The generation
-metadata records its SHA-256 checksum, source timestamp/URL, projection, buffer and
-simplification parameters, output bounds, area, and measured projection error. See
+metadata records its size and SHA-256 checksum, source and retrieval timestamps,
+tool versions, projection, buffer and simplification parameters, output bounds,
+area, validation samples, and measured projection error. `scripts/test.sh` performs
+the full source-to-output validation when the ignored source archive is present. See
 [docs/DATA.md](docs/DATA.md) for the exact method.
 
 ## AI assistance

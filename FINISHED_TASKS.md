@@ -59,6 +59,21 @@ a status record, not a duplicate of the chronological changelog.
 - Measured maximum projection error at representative Adriatic test segments as
   0.076324%, below the 0.5% validation gate.
 
+### 2026-08-22 — Reviewed 6 NM overlay 0.1.2
+
+- Downloaded the 925,340,242-byte OSM-derived coastline archive into the ignored raw
+  data directory and verified its published timestamp and SHA-256 checksum.
+- Generated the valid 1,052,107-byte WGS84 MultiPolygon overlay from 4,722 selected
+  source features, covering 58,001.174 km² within the configured Adriatic bounds.
+- Validated 252 source-to-output grid classifications with zero mismatches plus open
+  sea, land, corridor, and small-islet retention samples.
+- Visually reviewed a full-region rendering for island-dense areas, open-sea gaps,
+  both coasts, regional extremes, and output-edge artefacts.
+- Added full provenance/tool metadata, the embedded ODbL notice and data-method links,
+  repeatable validation helpers, and the updated user-facing documentation.
+- Cross-built the self-contained Linux amd64 and Windows amd64 executables and
+  smoke-tested the Linux runtime and every embedded application/data resource.
+
 ## Deferred by scope
 
 - Configurable/multiple buffer distances, point inspection, vector tiles, and offline

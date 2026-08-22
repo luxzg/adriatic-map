@@ -37,6 +37,7 @@ func TestEmbeddedApplicationFiles(t *testing.T) {
 		{path: "/vendor/leaflet/leaflet.js", contentType: "text/javascript", contains: "Leaflet"},
 		{path: "/data/adriatic_6nm.geojson", contentType: "application/geo+json", contains: "FeatureCollection"},
 		{path: "/data/metadata.json", contentType: "application/json", contains: "11112"},
+		{path: "/data/NOTICE.md", contentType: "text/markdown", contains: "ODbL 1.0"},
 	}
 
 	handler := New(Config{Version: "test-version"})

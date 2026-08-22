@@ -14,8 +14,8 @@ final marine area before any display clipping.
 
 ## Implemented processing steps
 
-1. Download one explicit dated snapshot into ignored `data/raw/`; verify its checksum.
-2. Record URL, retrieval timestamp, source timestamp if published, checksum, format,
+1. Download one explicit snapshot into ignored `data/raw/`; verify its checksum.
+2. Record URL, retrieval timestamp, published source timestamp, checksum, format,
    and license in machine-readable metadata shipped beside the output.
 3. Read all land polygons intersecting an Adriatic area of interest plus a margin
    wider than the maximum supported buffer/simplification tolerance.
@@ -46,9 +46,36 @@ The resulting land is dissolved, and holes are explicitly filled before bufferin
 freshwater interiors cannot become marine distance sources. The buffered result has
 land subtracted and is clipped only to the smaller output bounds.
 
+## Reviewed v1 data snapshot
+
+The tracked 0.1.2 overlay was generated and reviewed on 2026-08-22 with these recorded
+inputs and results:
+
+- Source timestamp: `2026-08-22T03:36:41Z`; local retrieval timestamp:
+  `2026-08-22T16:44:25Z`.
+- Source archive: 925,340,242 bytes; SHA-256
+  `43587830123e64eec8d4b5ac9259fdeb335b27e951fd36c3cc44eaa318e63e01`.
+- Tools: Python 3.13.12, GDAL 3.12.3, and PROJ 9.8.1.
+- Selected input: 4,722 features and 4,725 polygons after the safely margined spatial
+  selection.
+- Output: one valid WGS84 MultiPolygon, 1,052,107 bytes, covering 58,001.174 km² with
+  bounds `[11.405766, 39.0, 20.7, 45.80457]`.
+- Output SHA-256:
+  `e9154b7d1f1f1fd23c5b54c9e88e39f35f8d5f78ad42bd309645a73afcb29c05`.
+- Automated source-to-output review: 252 regional grid classifications with zero
+  mismatches, three open-sea samples, two land samples, one Dalmatian corridor sample,
+  and a retained coastal zone around a roughly 0.01 km² source islet.
+- Visual geometry review: full-region raster inspection covered the northern and
+  southern Adriatic, both coasts, island-dense zones, open-sea gaps, and output edges;
+  no obvious clipping-edge or land-fill artefacts were found.
+
+The authoritative machine-readable record is `data/generated/metadata.json`. The
+generated overlay is accompanied by `data/generated/NOTICE.md` and remains governed
+by ODbL 1.0.
+
 Because coastline polygons are based on the marine high-water coastline rather than
-freshwater lake shores, inland lakes should not become distance sources. Tests must
-still verify this invariant and the marine-mask behavior.
+freshwater lake shores, inland lakes should not become distance sources. Synthetic
+tests verify this invariant and the marine-only buffer behavior.
 
 ## Rocks and other exposed features
 
@@ -69,7 +96,7 @@ The runtime application must never query Overpass for this data.
 
 ## Basemap
 
-The proposed v1 uses normal interactive requests to the OSM standard raster tile URL
+V1 uses normal interactive requests to the OSM standard raster tile URL
 for only the current viewport. It must show `© OpenStreetMap contributors` visibly,
 send a normal browser Referer, honor browser caching, and provide no bulk download or
 offline-prefetch feature. The tile URL should be replaceable without restructuring
@@ -82,12 +109,19 @@ overlay is expected to remain an OSM-derived database/data product and must be
 published with the required attribution, ODbL notice, and source/processing offer.
 The application code license is separate and is GPL-3.0-or-later.
 
-Before committing generated data, review its metadata, attribution, license notice,
+The committed generated data was reviewed for metadata, attribution, license notice,
 size, feature count, geometry validity, bounding box, and absence of raw/private data.
 
-## Accuracy statement to publish with generated data
+## Accuracy and limitations
 
-Record the exact CRS definition, library versions, buffer distance, buffer parameters,
-simplification tolerance, source date, output coordinate precision, measured geodesic
-error samples, and known source limitations. Do not describe the result as certified
-or appropriate for navigation or legal determinations.
+The exact CRS definition, library versions, buffer distance and parameters,
+simplification tolerance, timestamps, coordinate precision, source checksum, output
+statistics, and measured validation results are recorded in metadata. The maximum
+measured local scale error is 0.076324%; simplification may move the displayed
+boundary by up to its 50 m configured tolerance in ordinary cases. The result also
+inherits OSM coastline completeness and temporal limitations and is clipped to the
+documented regional display bounds.
+
+The overlay is an informational visualization. It is not certified and must not be
+used for navigation, route planning, legal-distance determinations, or as a substitute
+for official nautical data.

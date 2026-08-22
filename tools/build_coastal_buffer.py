@@ -345,12 +345,18 @@ def write_metadata(
     simplify_metres: float,
     statistics: BuildStatistics,
 ) -> None:
+    source_retrieved_at = datetime.fromtimestamp(
+        source_path.stat().st_mtime,
+        timezone.utc,
+    ).isoformat(timespec="seconds")
     metadata = {
         "generated": True,
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "source_name": SOURCE_NAME,
         "source_url": source_url,
         "source_date": source_date,
+        "source_retrieved_at": source_retrieved_at,
+        "source_archive_bytes": source_path.stat().st_size,
         "source_sha256": sha256_file(source_path),
         "source_license": "ODbL-1.0",
         "attribution": "© OpenStreetMap contributors",
@@ -370,6 +376,15 @@ def write_metadata(
         "projection_max_relative_error_percent": round(
             statistics.projection_max_relative_error_percent, 6
         ),
+        "tool_versions": {
+            "python": sys.version.split()[0],
+            "gdal": gdal.VersionInfo("--version"),
+            "proj": (
+                f"{osr.GetPROJVersionMajor()}."
+                f"{osr.GetPROJVersionMinor()}."
+                f"{osr.GetPROJVersionMicro()}"
+            ),
+        },
         "navigation_use": False,
     }
     path.parent.mkdir(parents=True, exist_ok=True)

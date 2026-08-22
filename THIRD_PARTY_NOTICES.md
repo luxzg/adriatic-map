@@ -14,5 +14,5 @@ release archive and vendored under `web/vendor/leaflet/`.
 ## OpenStreetMap
 
 OpenStreetMap basemap and geographic data attribution and licensing are documented
-in `README.md` and `docs/DATA.md`. OpenStreetMap data is not relicensed under the
-application's GPL license.
+in `README.md`, `docs/DATA.md`, and `data/generated/NOTICE.md`. OpenStreetMap data is
+not relicensed under the application's GPL license.

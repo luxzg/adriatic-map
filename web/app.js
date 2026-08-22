@@ -89,7 +89,7 @@
       }
       const metadata = await response.json();
       if (metadata.generated) {
-        dataSummary.textContent = "Generated from " + metadata.source_name + " (" + metadata.source_date + ") using a " + metadata.buffer_metres.toLocaleString("en") + " m metric buffer. See docs/DATA.md for the complete method and limitations.";
+        dataSummary.textContent = "Generated from " + metadata.source_name + " (" + metadata.source_date + ") using a " + metadata.buffer_metres.toLocaleString("en") + " m metric buffer. See the method and data notice links below.";
       } else {
         dataSummary.textContent = "The real GIS-derived overlay is pending generation.";
       }
