@@ -59,8 +59,10 @@ These repeated commands have checked-in helper scripts and have been verified lo
 ./scripts/generate-data.sh "SOURCE LAST-MODIFIED TIMESTAMP"
 ./scripts/validate-data.sh
 ./scripts/build-release.sh
-go run ./cmd/adriatic-map
-curl -sS http://127.0.0.1:8080/healthz
+./scripts/run.sh
+./scripts/run.sh -listen 127.0.0.1:9000
+./scripts/run.sh -listen 127.0.0.1:0
+./scripts/smoke-test.sh
 ```
 
 The test script uses ignored project-local Go build/module caches, runs synthetic GIS
@@ -70,6 +72,16 @@ checks the working diff for whitespace errors. The release script cross-builds L
 amd64 and Windows amd64 binaries into ignored `dist/` and prints SHA-256 checksums. The
 server binds only to loopback by default and opens the system browser; use
 `-open=false` in automated or headless environments.
+
+Use these helpers instead of ad hoc command chains for normal work. The run helper
+passes application flags through unchanged, so the listen address is configurable and
+no test needs to assume that a fixed port is free. The smoke helper builds the release
+binaries, starts the Linux binary on port `0`, verifies all embedded runtime resources,
+compares the served overlay byte-for-byte with the tracked file, and shuts down.
+
+Python GIS code uses package-relative imports. Invoke it through the checked-in helpers
+or from the repository root as `python3 -m tools.<module>`; direct file invocation can
+break those imports.
 
 ## GIS maintainer prerequisites
 
@@ -83,8 +95,17 @@ sudo apt install gdal-bin python3-gdal curl
 
 The current pipeline is validated on Linux with Python 3.13 and GDAL 3.12. End users
 running a release binary need none of these tools. The source download is about 925 MB
-as of 2026-08-22 and is stored under ignored `data/raw/`; generation intermediates
-belong under ignored `data/work/`.
+as of 2026-08-22 and is stored at the ignored project path
+`data/raw/land-polygons-split-4326.zip`; generation intermediates belong under ignored
+`data/work/`. The tracked `data/raw/README.md` retains exact provenance while leaving
+the reusable large archive out of the public repository.
+
+## Field validation
+
+The user accepted version 0.1.2 on Linux after normal-browser visual inspection. The
+overlay, 50 m simplification, and responsive layout—including browser mobile-device
+emulation—were considered suitable for this informational application. The Windows
+binary is cross-built automatically but has not yet been run on Windows.
 
 ## Release model
 

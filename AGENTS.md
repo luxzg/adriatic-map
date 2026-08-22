@@ -74,9 +74,47 @@ Current application commands:
 - Test only the GIS pipeline: `./scripts/test-gis.sh`
 - Download the ignored land source: `./scripts/download-data.sh`
 - Generate the reviewed overlay: `./scripts/generate-data.sh "<source timestamp>"`
+- Validate generated data against the local raw source: `./scripts/validate-data.sh`
 - Build Linux and Windows release binaries: `./scripts/build-release.sh`
-- Run from source: `go run ./cmd/adriatic-map`
-- Runtime health/version check: `curl -sS http://127.0.0.1:8080/healthz`
+- Run from source: `./scripts/run.sh`
+- Run on a chosen loopback port: `./scripts/run.sh -listen 127.0.0.1:<port>`
+- Run on an automatically selected free port: `./scripts/run.sh -listen 127.0.0.1:0`
+- Build and smoke-test the embedded application: `./scripts/smoke-test.sh`
+
+## Standard-command policy
+
+- Prefer the project commands above so each safe recurring command can receive one
+  narrowly scoped approval. Do not replace them with long shell one-liners, unusual
+  command chains, manually assembled background processes, or arbitrary fixed ports.
+- Issue routine approved commands as separate tool calls. In particular, do not join
+  `git add`, `git status`, `git diff`, `git commit`, `git push`, tests, or builds with
+  `&&`, `;`, pipelines, shell wrappers, or similar operators merely for convenience.
+  Separate calls preserve the user's existing narrow approvals and make each action
+  and result clear.
+- Exceptions are allowed for diagnosis when a standard command fails or does not
+  expose enough information. Explain the exception, keep it read-only or reversible
+  where possible, and turn repeated diagnostic sequences into a checked-in helper.
+- Run Python GIS packages from the repository root through their modules, for example
+  `python3 -m tools.build_coastal_buffer`; do not invoke files such as
+  `python3 tools/build_coastal_buffer.py` because package imports may then fail.
+- The server's `127.0.0.1:8080` address is only a default. Never assume a particular
+  test port is free; pass any valid loopback port through `-listen`, or use port `0`
+  and read the selected port from the startup message.
+- Keep generated caches under the ignored project-local cache directories established
+  by the helpers. Do not construct one-off cache/environment commands unless debugging.
+
+## Project observations
+
+- The user visually accepted version 0.1.2 on Linux in a normal browser and in mobile
+  device emulation. The 50 m topology-preserving simplification is acceptable for this
+  informational map. Windows runtime behavior remains untested by the user.
+- The reusable 925,340,242-byte source archive lives at
+  `data/raw/land-polygons-split-4326.zip`, inside the project rather than a temporary
+  directory. It is intentionally ignored and must not be staged. Its provenance,
+  checksum, versions, and rolling-source limitation are documented in
+  `data/raw/README.md`, `docs/DATA.md`, and generated metadata.
+- `data/generated/adriatic_6nm.geojson` is not a placeholder. It is the reviewed,
+  tracked 1.1 MB ODbL-derived runtime overlay. Keep its notice and metadata beside it.
 
 ## Git workflow
 

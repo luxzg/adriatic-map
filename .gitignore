@@ -40,7 +40,8 @@ __pycache__/
 htmlcov/
 
 # Downloaded/raw geographic data and reproducible intermediates
-data/raw/
+data/raw/*
+!data/raw/README.md
 data/work/
 data/tmp/
 

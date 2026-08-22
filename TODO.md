@@ -2,9 +2,15 @@
 
 Only active work belongs here.
 
-## User validation before a tagged release
+## Requested follow-up features
 
-- Run the Linux or Windows prototype and manually review the map in a normal browser,
-  including overlay controls, both quick views, several zoom levels, representative
-  island-dense corridors, both coasts, and the northern and southern Adriatic.
-- Record any findings before deciding whether to tag and publish a GitHub Release.
+- Add an overlay color control that supports a native color picker and a validated hex
+  value while preserving a sensible default.
+- Add selectable distance presets backed by separately generated and validated data.
+  Confirm the desired preset list before generation; `1/3/6/12 NM` is the recommended
+  small initial set. Do not approximate buffers dynamically in the browser.
+
+## Release validation
+
+- Run and visually inspect the Windows binary before describing Windows runtime
+  behavior as user-validated or publishing a tagged cross-platform release.

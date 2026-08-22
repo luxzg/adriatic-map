@@ -43,11 +43,18 @@ acceptance gate. EPSG:3857 is not used for the distance calculation.
 
 ## Deferred unless unusually easy
 
-- Multiple or dynamically calculated distances (1/3/6/12 NM).
+- Multiple distance presets backed by precomputed, independently validated overlays;
+  `1/3/6/12 NM` is the recommended first set pending user confirmation.
 - Click-to-inspect nearest-land distance and classification.
+- A separately sourced and auditable exposed-rock layer; ambiguous, awash, and
+  submerged features must remain excluded.
 - Multiple levels of detail or vector tiles.
 - Offline basemap tiles.
 - Dynamic source updates or a database.
+
+An overlay color picker/hex input is now a requested follow-up rather than part of the
+original v1. Multiple levels of detail or vector tiles are not justified by the
+accepted 1.1 MB overlay unless future preset data causes a real performance problem.
 
 ## Explicit non-goals
 

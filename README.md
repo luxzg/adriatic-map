@@ -49,12 +49,14 @@ validation, and limitations.
 Go 1.26 or newer is required:
 
 ```bash
-go run ./cmd/adriatic-map
+./scripts/run.sh
 ```
 
 The server listens on <http://127.0.0.1:8080/> and opens the default browser. Use
-`-open=false` to suppress browser launch or `-listen 127.0.0.1:9000` to select a
-different local port. Stop it with Ctrl+C.
+`./scripts/run.sh -open=false` to suppress browser launch or pass any available
+loopback port, for example `./scripts/run.sh -listen 127.0.0.1:9000`. Port `0` asks
+the operating system to choose a free port and the application prints and opens the
+resulting URL. Stop it with Ctrl+C.
 
 ## Build and test
 
@@ -63,6 +65,7 @@ On Linux, run the complete test/vet/check workflow and build both platform binar
 ```bash
 ./scripts/test.sh
 ./scripts/build-release.sh
+./scripts/smoke-test.sh
 ```
 
 Outputs are written to ignored `dist/`:
@@ -99,6 +102,19 @@ tool versions, projection, buffer and simplification parameters, output bounds,
 area, validation samples, and measured projection error. `scripts/test.sh` performs
 the full source-to-output validation when the ignored source archive is present. See
 [docs/DATA.md](docs/DATA.md) for the exact method.
+
+The 925 MB raw archive is stored inside this project at
+`data/raw/land-polygons-split-4326.zip`, not in a temporary directory. It remains
+available locally for reuse but is deliberately ignored by Git. The tracked
+[raw-data guide](data/raw/README.md) records its URL, timestamps, exact byte size,
+SHA-256, format, license, and rolling-snapshot caveat. The reviewed 1.1 MB derived
+overlay under `data/generated/` is intentionally tracked and is not a placeholder.
+
+## Possible follow-up features
+
+The current requested follow-ups are an overlay color control and additional
+precomputed distance choices. Other original optional ideas remain documented in
+[PROJECT_OUTLINE.md](PROJECT_OUTLINE.md) and summarized in [TODO.md](TODO.md).
 
 ## AI assistance
 

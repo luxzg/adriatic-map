@@ -8,6 +8,9 @@ export GOCACHE
 export GOMODCACHE
 cd "$project_root"
 
+for script in scripts/*.sh; do
+    sh -n "$script"
+done
 python3 -m py_compile tools/build_coastal_buffer.py tools/test_build_coastal_buffer.py tools/validate_generated_overlay.py
 python3 -m unittest -v tools.test_build_coastal_buffer
 if [ -f data/raw/land-polygons-split-4326.zip ]; then

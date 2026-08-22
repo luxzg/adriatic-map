@@ -74,6 +74,18 @@ a status record, not a duplicate of the chronological changelog.
 - Cross-built the self-contained Linux amd64 and Windows amd64 executables and
   smoke-tested the Linux runtime and every embedded application/data resource.
 
+### 2026-08-22 — Linux user acceptance and workflow hardening
+
+- User-tested version 0.1.2 on Linux and accepted the visual geometry and 50 m
+  simplification as suitable for informational use.
+- User-tested the responsive layout through browser mobile-device emulation and found
+  it reasonably usable.
+- Confirmed the raw archive remains reusable inside ignored project storage and the
+  compact generated overlay remains tracked with its provenance and license notice.
+- Added stable run and smoke-test helpers plus project rules for package-based Python
+  invocation, arbitrary/free ports, and standardized commands with diagnostic-only
+  exceptions.
+
 ## Deferred by scope
 
 - Configurable/multiple buffer distances, point inspection, vector tiles, and offline

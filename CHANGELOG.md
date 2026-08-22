@@ -75,3 +75,22 @@ All notable code, data, documentation, and workflow changes are recorded here.
 - Rebuilt Linux amd64 and Windows amd64 executables and smoke-tested the Linux binary,
   including its health response, security headers, UI, exact embedded overlay,
   metadata, data notice, version, and clean shutdown.
+
+## Documentation and workflow - 2026-08-22 19:18 CEST
+
+- Recorded the user's successful Linux visual review, acceptance of the simplified
+  overlay, and successful responsive-layout check using browser mobile emulation;
+  retained Windows runtime testing as the only release-validation item.
+- Documented that the reusable 925,340,242-byte raw archive remains inside the project
+  under ignored `data/raw/`, while the reviewed 1.1 MB generated overlay is tracked
+  runtime data rather than a placeholder.
+- Added a tracked raw-data guide with the source URL, timestamps, exact size, SHA-256,
+  format, license, regeneration path, and warning that the publisher URL is a rolling
+  snapshot.
+- Standardized normal agent/operator work on checked-in commands, recorded module-based
+  Python invocation and free-port rules, and added run and self-cleaning smoke-test
+  helpers so routine work does not require ad hoc shell command chains.
+- Required approved Git, test, build, and helper commands to run as separate tool calls
+  rather than being joined with shell control operators that trigger redundant approval.
+- Added requested overlay-color and precomputed distance-selector follow-ups and kept
+  the remaining original optional features explicitly documented.

@@ -73,6 +73,14 @@ The authoritative machine-readable record is `data/generated/metadata.json`. The
 generated overlay is accompanied by `data/generated/NOTICE.md` and remains governed
 by ODbL 1.0.
 
+The 925 MB archive remains locally reusable at the ignored project path
+`data/raw/land-polygons-split-4326.zip`; it was not downloaded to or removed from a
+temporary directory. `data/raw/README.md` keeps the directory and provenance visible
+in a fresh clone. The publisher URL serves a rolling current snapshot, so later
+downloads may not reproduce the exact 2026-08-22 checksum. A regeneration must record
+the newly retrieved snapshot's timestamp, size, and checksum rather than reuse old
+values.
+
 Because coastline polygons are based on the marine high-water coastline rather than
 freshwater lake shores, inland lakes should not become distance sources. Synthetic
 tests verify this invariant and the marine-only buffer behavior.
