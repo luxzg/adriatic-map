@@ -19,7 +19,7 @@ import (
 	"github.com/luxzg/adriatic-map/internal/server"
 )
 
-const version = "0.2.0"
+const version = "0.2.1"
 
 func main() {
 	listenAddress := flag.String("listen", "127.0.0.1:8080", "HTTP listen address")

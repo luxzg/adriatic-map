@@ -11,9 +11,10 @@ geographic data.
 
 ## Status
 
-Version 0.2.0 adds all five reviewed distance overlays, user-selectable overlay color,
-and an opt-in point inspector to the tested local application and reproducible
-Python/GDAL pipeline. See
+Version 0.2.1 provides five reviewed distance overlays, user-selectable overlay color,
+and an opt-in point inspector. It also adds readable progress and elapsed-time output
+to the reproducible Python/GDAL generation workflow and uses `#0e0af5` as the default
+overlay color. See
 [PROJECT_OUTLINE.md](PROJECT_OUTLINE.md) for the v1 scope and [docs/DATA.md](docs/DATA.md)
 for the exact data method and limitations.
 
@@ -106,6 +107,11 @@ tool versions, projection, buffer and simplification parameters, output bounds,
 area, validation samples, and measured projection error. `scripts/test.sh` performs
 the full source-to-output validation when the ignored source archive is present. See
 [docs/DATA.md](docs/DATA.md) for the exact method.
+
+Generation prints the active band and GIS phase as work progresses. After every band,
+it reports generation, validation, and combined elapsed time; a final line reports the
+total time for all five bands. Individual source polygons are not logged because the
+pipeline processes thousands of them as aggregate geometry.
 
 The 925 MB raw archive is stored inside this project at
 `data/raw/land-polygons-split-4326.zip`, not in a temporary directory. It remains

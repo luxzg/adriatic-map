@@ -80,6 +80,21 @@ func TestInspectionIsOffByDefault(t *testing.T) {
 	}
 }
 
+func TestDefaultOverlayColorIsSynchronized(t *testing.T) {
+	handler := New(Config{Version: "test-version"})
+	for _, path := range []string{"/", "/app.js", "/style.css"} {
+		request := httptest.NewRequest(http.MethodGet, path, nil)
+		response := httptest.NewRecorder()
+		handler.ServeHTTP(response, request)
+		if response.Code != http.StatusOK {
+			t.Fatalf("%s status = %d, want %d", path, response.Code, http.StatusOK)
+		}
+		if !strings.Contains(response.Body.String(), "#0e0af5") {
+			t.Errorf("%s does not contain the default overlay color", path)
+		}
+	}
+}
+
 func TestSecurityAndCacheHeaders(t *testing.T) {
 	handler := New(Config{Version: "test-version"})
 	tests := []struct {

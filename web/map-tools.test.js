@@ -40,6 +40,8 @@ assert.deepEqual(tools.classifyDistanceBand([8, 8], [
 assert.equal(tools.normalizeHexColor("#F59E0B"), "#f59e0b");
 assert.equal(tools.normalizeHexColor("075985"), "#075985");
 assert.equal(tools.normalizeHexColor("orange"), null);
+assert.equal(tools.contrastTextColor("#0e0af5"), "#ffffff");
+assert.equal(tools.contrastTextColor("#f59e0b"), "#172033");
 
 const generatedOverlays = [1, 3, 6, 12, 20].map((nauticalMiles) => ({
   nauticalMiles,

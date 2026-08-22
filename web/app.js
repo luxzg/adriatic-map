@@ -4,7 +4,7 @@
   const ADRIATIC_BOUNDS = L.latLngBounds([39.1, 11.4], [46.0, 20.7]);
   const DALMATIA_BOUNDS = L.latLngBounds([42.2, 14.0], [44.8, 18.9]);
   const DEFAULT_OPACITY = 0.45;
-  const DEFAULT_COLOR = "#f59e0b";
+  const DEFAULT_COLOR = "#0e0af5";
 
   const distanceBadge = document.querySelector(".distance-badge");
   const distanceDetail = document.querySelector(".distance-detail");
@@ -165,6 +165,10 @@
   function applyOverlayColor(value) {
     overlayColor = value;
     document.documentElement.style.setProperty("--overlay-color", value);
+    document.documentElement.style.setProperty(
+      "--overlay-contrast",
+      AdriaticMapTools.contrastTextColor(value),
+    );
     overlayColorPicker.value = value;
     overlayColorHex.value = value;
     overlayColorHex.setAttribute("aria-invalid", "false");

@@ -79,8 +79,8 @@ inputs and results:
   a roughly 0.01 km² source islet.
 - Earlier visual geometry review of the unchanged 6 NM output covered the northern
   and southern Adriatic, both coasts, island-dense zones, open-sea gaps, and output
-  edges; no obvious clipping-edge or land-fill artefacts were found. The new selector
-  and the other four outputs remain on the 0.2.0 manual browser checklist.
+  edges; no obvious clipping-edge or land-fill artefacts were found. The user later
+  confirmed on Linux that all five selectable zones display and operate correctly.
 
 The authoritative machine-readable records are `data/generated/metadata.json` for
 6 NM and `data/generated/adriatic_DISTANCEnm.metadata.json` for the other distances.

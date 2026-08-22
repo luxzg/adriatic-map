@@ -36,12 +36,12 @@ as the default. Use normal viewport-only online OSM basemap tiles, keep
 coastline-derived land authoritative, and keep raw downloads and intermediates out of
 Git.
 
-The overlay color is user-selectable. Point inspection must be an explicit toggle,
-off by default; it reports only the precomputed distance band and selected-zone
-classification. It must not imply an exact surveyed distance or legal determination.
-The distance choices correspond to bands used in current Croatian navigation-area
-rules, but vessel documents, qualifications, additional restrictions, and official
-current sources remain authoritative.
+The overlay color is user-selectable, with `#0e0af5` as the default. Point inspection
+must be an explicit toggle, off by default; it reports only the precomputed distance
+band and selected-zone classification. It must not imply an exact surveyed distance or
+legal determination. The distance choices correspond to bands used in current
+Croatian navigation-area rules, but vessel documents, qualifications, additional
+restrictions, and official current sources remain authoritative.
 
 Do not add a separate rock layer, offline basemap, multiple detail levels/vector tiles,
 dynamic data updates, or a database unless the user explicitly reverses the current
@@ -116,12 +116,17 @@ Current application commands:
   and read the selected port from the startup message.
 - Keep generated caches under the ignored project-local cache directories established
   by the helpers. Do not construct one-off cache/environment commands unless debugging.
+- Keep long-running generation visibly active: preserve per-band phase messages,
+  one-blank-line band separation, per-band generation/validation timing, and total
+  elapsed time. Do not emit thousands of per-source-polygon progress lines.
 
 ## Project observations
 
 - The user visually accepted version 0.1.2 on Linux in a normal browser and in mobile
   device emulation. The 50 m topology-preserving simplification is acceptable for this
-  informational map. Windows runtime behavior remains untested by the user.
+  informational map. The user later confirmed version 0.2.0 distance zones, color
+  selection, and point inspection work on Linux. Windows runtime behavior remains
+  untested by the user.
 - The reusable 925,340,242-byte source archive lives at
   `data/raw/land-polygons-split-4326.zip`, inside the project rather than a temporary
   directory. It is intentionally ignored and must not be staged. Its provenance,

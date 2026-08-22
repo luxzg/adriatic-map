@@ -75,6 +75,11 @@ release script cross-builds Linux amd64 and Windows amd64 binaries into ignored
 `dist/` and prints SHA-256 checksums. The server binds only to loopback by default and
 opens the system browser; use `-open=false` in automated or headless environments.
 
+The data-generation helper separates each band with one blank line, identifies the
+active GIS phase, reports generation and validation time for each band, and reports
+total elapsed time after all five bands complete. Timing uses whole seconds at the
+shell level and tenths of a second for the internal GIS phases.
+
 Use these helpers instead of ad hoc command chains for normal work. The run helper
 passes application flags through unchanged, so the listen address is configurable and
 no test needs to assume that a fixed port is free. The smoke helper builds the release
@@ -106,10 +111,10 @@ the reusable large archive out of the public repository.
 
 The user accepted version 0.1.2 on Linux after normal-browser visual inspection. The
 overlay, 50 m simplification, and responsive layout—including browser mobile-device
-emulation—were considered suitable for this informational application. The Windows
-binary is cross-built automatically but has not yet been run on Windows. Version 0.2.0
-still needs manual browser review of distance switching, color editing, and the
-explicitly enabled point inspector.
+emulation—were considered suitable for this informational application. The user then
+accepted version 0.2.0 distance switching, color selection, and opt-in point
+inspection on Linux. The Windows binary is cross-built automatically but has not yet
+been run on Windows.
 
 ## Release model
 

@@ -99,6 +99,17 @@ a status record, not a duplicate of the chronological changelog.
 - Documented the Croatian regulatory context without claiming the map can establish
   the legal limit applicable to a vessel, skipper, or voyage.
 
+### 2026-08-22 — Generation progress and default color 0.2.1
+
+- Recorded the user's successful Linux testing of all five zones, the overlay color
+  control, and opt-in point inspection.
+- Added flushed GIS phase messages so a long-running band visibly progresses through
+  source loading, geometry construction/simplification, and output writing.
+- Added one-blank-line band separation plus generation, validation, combined-band,
+  and all-band elapsed times to the standard generation helper.
+- Changed the default overlay color to `#0e0af5` and kept badge text readable across
+  light and dark user-selected colors.
+
 ## Deliberately not planned
 
 - A separate rock/seamark layer, because the accepted coastline polygons already

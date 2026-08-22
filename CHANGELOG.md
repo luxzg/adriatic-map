@@ -2,6 +2,18 @@
 
 All notable code, data, documentation, and workflow changes are recorded here.
 
+## 0.2.1 - 2026-08-22 20:29 CEST
+
+- Added visible, flushed phase progress while each coastal-distance band loads source
+  land geometry, constructs and simplifies its marine zone, and writes output.
+- Added a blank line between bands, generation and validation timings for each band,
+  combined per-band timing, and total elapsed time for all five bands.
+- Changed the default overlay color from amber to `#0e0af5` and added readable light
+  or dark text selection for the color-backed distance badge.
+- Recorded the user's successful Linux testing of the five zones, color selection,
+  and opt-in point inspection; Windows runtime validation remains open.
+- Bumped the application version from 0.2.0 to 0.2.1.
+
 ## 0.2.0 - 2026-08-22 20:01 CEST
 
 - Added independently generated and validated 1/3/6/12/20 NM marine overlays from the

@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 import sys
+import time
 import zipfile
 
 from osgeo import gdal, ogr, osr
@@ -418,12 +419,35 @@ def main(argv: list[str] | None = None) -> int:
     arguments = parse_arguments(argv or sys.argv[1:])
     if not arguments.source.is_file():
         raise ValueError(f"source file does not exist: {arguments.source}")
+    started_at = time.monotonic()
     buffer_metres = arguments.buffer_nm * NAUTICAL_MILE_METRES
+
+    print(
+        f"  Loading and preparing source land geometry for {arguments.buffer_nm:g} NM...",
+        flush=True,
+    )
+    phase_started_at = time.monotonic()
     land, feature_count, polygon_count = load_land_geometry(arguments.source)
+    print(
+        f"  Prepared {feature_count:,} features / {polygon_count:,} polygons "
+        f"in {time.monotonic() - phase_started_at:.1f}s.",
+        flush=True,
+    )
+
+    print(
+        f"  Building and simplifying the {arguments.buffer_nm:g} NM marine zone...",
+        flush=True,
+    )
+    phase_started_at = time.monotonic()
     zone, area_square_kilometres = build_coastal_zone(
         land,
         buffer_metres=buffer_metres,
         simplify_metres=arguments.simplify_metres,
+    )
+    print(
+        f"  Built {area_square_kilometres:,.1f} km² in "
+        f"{time.monotonic() - phase_started_at:.1f}s; validating and writing files...",
+        flush=True,
     )
     validate_output(zone)
     statistics = BuildStatistics(
@@ -452,7 +476,9 @@ def main(argv: list[str] | None = None) -> int:
     print(
         f"wrote {arguments.output} "
         f"({area_square_kilometres:,.1f} km², "
-        f"{feature_count} source features)"
+        f"{feature_count} source features, "
+        f"{time.monotonic() - started_at:.1f}s total)",
+        flush=True,
     )
     return 0
 

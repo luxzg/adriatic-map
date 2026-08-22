@@ -39,7 +39,7 @@ acceptance gate. EPSG:3857 is not used for the distance calculation.
   full-Adriatic view, and Dalmatia view.
 - Opt-in point inspection reporting coordinates, an approximate precomputed distance
   band, and selected-zone membership; disabled by default.
-- User-selectable fill and outline color with an amber/orange default.
+- User-selectable fill and outline color with `#0e0af5` as the default.
 - Visible OSM attribution, data/source information, and navigation disclaimer.
 - Responsive desktop and basic tablet/mobile layout.
 - Reproducible data-generation inputs, parameters, tests, and metadata.

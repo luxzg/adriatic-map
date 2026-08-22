@@ -112,8 +112,21 @@
     return match ? `#${match[1].toLowerCase()}` : null;
   }
 
+  function contrastTextColor(value) {
+    const normalized = normalizeHexColor(value);
+    if (!normalized) {
+      return "#ffffff";
+    }
+    const red = Number.parseInt(normalized.slice(1, 3), 16);
+    const green = Number.parseInt(normalized.slice(3, 5), 16);
+    const blue = Number.parseInt(normalized.slice(5, 7), 16);
+    const brightness = (red * 299 + green * 587 + blue * 114) / 1000;
+    return brightness >= 150 ? "#172033" : "#ffffff";
+  }
+
   return {
     classifyDistanceBand,
+    contrastTextColor,
     normalizeHexColor,
     pointInDocument,
   };
