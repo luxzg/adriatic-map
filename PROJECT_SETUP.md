@@ -8,9 +8,10 @@ are deliberately not documented as if they already work.
 - Local root: `/home/luka/dev/adriatic-map`
 - Intended public GitHub remote: `git@github.com:luxzg/adriatic-map.git`
 - Intended default branch: `main`
-- Implementation approved on 2026-08-22; Git initialization is the next workflow step
+- Repository initialized on `main`, with the public `origin` configured and pushed
 - Available locally: Git 2.53.0, Go 1.26.0, Python 3.13.12, GDAL `ogr2ogr`
 - Not currently importable in system Python: GeoPandas/Shapely/pyproj as a set
+- Available GIS runtime: GDAL 3.12.3 command-line tools and Python bindings
 - Project language: English exclusively
 - Project license: GPL-3.0-or-later, excluding third-party and OSM-derived material
   governed by its own stated license
@@ -56,6 +57,9 @@ than guessed during planning.
 
 ```bash
 ./scripts/test.sh
+./scripts/test-gis.sh
+./scripts/download-data.sh
+./scripts/generate-data.sh "SOURCE LAST-MODIFIED TIMESTAMP"
 ./scripts/build-release.sh
 go run ./cmd/adriatic-map
 curl -sS http://127.0.0.1:8080/healthz
@@ -66,6 +70,21 @@ runs `go vet`, and checks the working diff for whitespace errors. The release sc
 cross-builds Linux amd64 and Windows amd64 binaries into ignored `dist/` and prints
 SHA-256 checksums. The server binds only to loopback by default and opens the system
 browser; use `-open=false` in automated or headless environments.
+
+## GIS maintainer prerequisites
+
+The pipeline uses Python's GDAL/OGR bindings directly and does not require GeoPandas,
+Shapely, pyproj, a database, or a Python virtual environment. On Debian/Ubuntu, install
+missing prerequisites manually:
+
+```bash
+sudo apt install gdal-bin python3-gdal curl
+```
+
+The current pipeline is validated on Linux with Python 3.13 and GDAL 3.12. End users
+running a release binary need none of these tools. The source download is about 925 MB
+as of 2026-08-22 and is stored under ignored `data/raw/`; generation intermediates
+belong under ignored `data/work/`.
 
 ## Proposed release model
 

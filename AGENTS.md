@@ -71,6 +71,9 @@ downloads and intermediates out of Git.
 Current application commands:
 
 - Test and vet: `./scripts/test.sh`
+- Test only the GIS pipeline: `./scripts/test-gis.sh`
+- Download the ignored land source: `./scripts/download-data.sh`
+- Generate the reviewed overlay: `./scripts/generate-data.sh "<source timestamp>"`
 - Build Linux and Windows release binaries: `./scripts/build-release.sh`
 - Run from source: `go run ./cmd/adriatic-map`
 - Runtime health/version check: `curl -sS http://127.0.0.1:8080/healthz`

@@ -45,6 +45,20 @@ a status record, not a duplicate of the chronological changelog.
 - Smoke-tested the built Linux server on a free loopback port and confirmed its HTML,
   health endpoint, security headers, embedded data, and clean shutdown.
 
+### 2026-08-22 — Reproducible GIS pipeline 0.1.1
+
+- Implemented Python/GDAL source archive discovery, safely margined land selection,
+  geometry repair/dissolve, freshwater-hole filling, custom metric transformation,
+  exact 11,112 m buffer, land subtraction, output clipping, topology-preserving
+  simplification, WGS84 GeoJSON export, and detailed generation metadata.
+- Added safe source download and generation helpers that keep the large raw archive
+  and intermediates ignored and refuse to overwrite an existing source archive.
+- Added synthetic GIS tests for the exact nautical-mile conversion, freshwater-hole
+  suppression, marine-only buffering, clip bounds, output licensing, and projection
+  distortion.
+- Measured maximum projection error at representative Adriatic test segments as
+  0.076324%, below the 0.5% validation gate.
+
 ## Deferred by scope
 
 - Configurable/multiple buffer distances, point inspection, vector tiles, and offline

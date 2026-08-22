@@ -12,7 +12,7 @@ Use the unsimplified WGS84 source. Do not calculate distance in latitude/longitu
 Web Mercator. Select the complete relevant Adriatic geometry with a buffer beyond the
 final marine area before any display clipping.
 
-## Proposed processing steps
+## Implemented processing steps
 
 1. Download one explicit dated snapshot into ignored `data/raw/`; verify its checksum.
 2. Record URL, retrieval timestamp, source timestamp if published, checksum, format,
@@ -28,6 +28,23 @@ final marine area before any display clipping.
    deviation and verify curated small islands/islets remain represented.
 8. Transform output to EPSG:4326 and write reviewed GeoJSON plus build metadata.
 9. Run automated geometry, projection-error, clip-edge, and corridor sanity tests.
+
+The implementation is `tools/build_coastal_buffer.py`, invoked through
+`scripts/generate-data.sh`. It uses only Python's GDAL/OGR bindings. Current fixed
+v1 parameters are:
+
+- Output bounds: 11.4° E to 20.7° E and 39.0° N to 46.1° N.
+- Source-selection margin: 1.0° outside every output edge.
+- Metric CRS: custom WGS84 azimuthal equidistant projection centered at 43° N, 16° E.
+- Buffer: exactly 11,112 m, with 24 segments per quadrant.
+- Topology-preserving simplification: 50 m after buffering/dissolving/clipping.
+- GeoJSON output precision: 0.000001°.
+- Measured maximum short-segment projection error at test samples: 0.076324%.
+
+The source is spatially selected and intersected only at the larger source extent.
+The resulting land is dissolved, and holes are explicitly filled before buffering so
+freshwater interiors cannot become marine distance sources. The buffered result has
+land subtracted and is clipped only to the smaller output bounds.
 
 Because coastline polygons are based on the marine high-water coastline rather than
 freshwater lake shores, inland lakes should not become distance sources. Tests must

@@ -10,10 +10,11 @@ from mainland coasts, islands, and islets represented in published geographic da
 
 ## Status
 
-Version 0.1.0 provides the tested application shell and an intentionally empty
-placeholder overlay. The reproducible GIS pipeline and real 6 NM overlay are still
-being implemented. See [PROJECT_OUTLINE.md](PROJECT_OUTLINE.md) for the v1 scope and
-[TODO.md](TODO.md) for active work.
+Version 0.1.1 provides the tested application shell and reproducible Python/GDAL GIS
+pipeline. The committed overlay is still an intentionally empty placeholder while the
+real source-data generation and review are underway. See
+[PROJECT_OUTLINE.md](PROJECT_OUTLINE.md) for the v1 scope and [TODO.md](TODO.md) for
+active work.
 
 ## Planned v1
 
@@ -78,6 +79,23 @@ On Windows PowerShell with Go installed:
 Release binaries contain the UI and overlay data and require no database or Python.
 The basemap requires internet access. Planning and deeper setup are documented in
 [PROJECT_SETUP.md](PROJECT_SETUP.md).
+
+## Regenerate geographic data
+
+End users do not need GIS software. Maintainers regenerating the overlay need Python
+3, GDAL command-line tools and Python bindings, `curl`, and about 1 GB for the ignored
+source archive:
+
+```bash
+./scripts/download-data.sh
+./scripts/test-gis.sh
+./scripts/generate-data.sh "SOURCE LAST-MODIFIED TIMESTAMP"
+```
+
+The download helper never overwrites an existing source archive. The generation
+metadata records its SHA-256 checksum, source timestamp/URL, projection, buffer and
+simplification parameters, output bounds, area, and measured projection error. See
+[docs/DATA.md](docs/DATA.md) for the exact method.
 
 ## AI assistance
 

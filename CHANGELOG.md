@@ -44,3 +44,16 @@ All notable code, data, documentation, and workflow changes are recorded here.
   before the reproducible GIS output is ready.
 - Added repeatable tests, vet/check workflow, Linux/Windows amd64 builds, JavaScript
   syntax validation, and a successful loopback server smoke test.
+
+## 0.1.1 - 2026-08-22 18:38 CEST
+
+- Added the reproducible Python/GDAL pipeline for safely margined OSM land selection,
+  geometry repair/dissolve, freshwater-hole filling, custom metric projection, exact
+  11,112 m buffering, land subtraction, final clipping, simplification, WGS84 export,
+  and detailed source/accuracy metadata.
+- Added safe source download/generation helpers and integrated five synthetic GIS tests
+  into the standard test workflow.
+- Verified metric projection distortion at representative Adriatic samples is
+  0.076324%, below the 0.5% gate.
+- Documented the 925 MB source archive, maintainer prerequisites, fixed v1 parameters,
+  ignored raw-data workflow, and regeneration commands.
