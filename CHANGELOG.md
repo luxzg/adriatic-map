@@ -2,6 +2,24 @@
 
 All notable code, data, documentation, and workflow changes are recorded here.
 
+## 0.2.0 - 2026-08-22 20:01 CEST
+
+- Added independently generated and validated 1/3/6/12/20 NM marine overlays from the
+  reviewed coastline snapshot, with 6 NM retained as the default.
+- Added distance selection, synchronized native color-picker and validated hex color
+  controls, plus an explicitly toggled point inspector that is off by default.
+- Added approximate precomputed-band classification and selected-overlay membership;
+  inspection does not claim an exact or legally determinative distance.
+- Generalized the GIS generator and validator for every supported distance, added an
+  embedded overlay manifest, and expanded standard tests and runtime smoke checks to
+  cover all five datasets.
+- Fixed closed-ring point containment so a repeated polygon endpoint cannot cause
+  unrelated locations to be classified as polygon-boundary hits.
+- Recorded exact output sizes, areas, checksums, source-to-output validation totals,
+  Croatian regulatory context, limitations, and the deliberately excluded optional
+  complexity in project documentation.
+- Bumped the application version from 0.1.2 to 0.2.0.
+
 ## Documentation - 2026-08-22 17:53 CEST
 
 - Established the provisional project documentation structure and planning gate.

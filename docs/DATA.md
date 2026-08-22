@@ -21,22 +21,26 @@ final marine area before any display clipping.
    wider than the maximum supported buffer/simplification tolerance.
 4. Validate and repair geometry conservatively; fail with useful diagnostics if a
    repair would discard unexpected geometry.
-5. Transform to the approved metric CRS and buffer by exactly 11,112 m.
-6. Dissolve overlaps. Intersect with an explicit Adriatic marine mask or otherwise
-   remove land so the output represents marine water within range.
-7. Simplify topology-preservingly only after correctness tests pass. Measure output
-   deviation and verify curated small islands/islets remain represented.
-8. Transform output to EPSG:4326 and write reviewed GeoJSON plus build metadata.
-9. Run automated geometry, projection-error, clip-edge, and corridor sanity tests.
+5. Transform to the approved metric CRS and independently buffer by exactly 1,852,
+   5,556, 11,112, 22,224, and 37,040 m (1/3/6/12/20 NM).
+6. For each distance, dissolve overlaps. Intersect with an explicit Adriatic marine
+   mask or otherwise remove land so the output represents marine water within range.
+7. Simplify each result topology-preservingly only after correctness tests pass.
+   Measure output deviation and verify curated small islands/islets remain represented.
+8. Transform each output to EPSG:4326 and write reviewed GeoJSON plus build metadata.
+9. Run automated geometry, projection-error, clip-edge, corridor, and cross-band
+   sanity tests.
 
 The implementation is `tools/build_coastal_buffer.py`, invoked through
-`scripts/generate-data.sh`. It uses only Python's GDAL/OGR bindings. Current fixed
-v1 parameters are:
+`scripts/generate-data.sh`. The helper builds and validates all five distances; use
+`scripts/validate-data.sh DISTANCE` to validate one supported distance. It uses only
+Python's GDAL/OGR bindings. Current fixed parameters are:
 
 - Output bounds: 11.4° E to 20.7° E and 39.0° N to 46.1° N.
 - Source-selection margin: 1.0° outside every output edge.
 - Metric CRS: custom WGS84 azimuthal equidistant projection centered at 43° N, 16° E.
-- Buffer: exactly 11,112 m, with 24 segments per quadrant.
+- Buffers: exactly 1,852/5,556/11,112/22,224/37,040 m, each with 24 segments per
+  quadrant.
 - Topology-preserving simplification: 50 m after buffering/dissolving/clipping.
 - GeoJSON output precision: 0.000001°.
 - Measured maximum short-segment projection error at test samples: 0.076324%.
@@ -46,9 +50,9 @@ The resulting land is dissolved, and holes are explicitly filled before bufferin
 freshwater interiors cannot become marine distance sources. The buffered result has
 land subtracted and is clipped only to the smaller output bounds.
 
-## Reviewed v1 data snapshot
+## Reviewed 0.2.0 data snapshot
 
-The tracked 0.1.2 overlay was generated and reviewed on 2026-08-22 with these recorded
+The tracked overlays were generated and reviewed on 2026-08-22 with these recorded
 inputs and results:
 
 - Source timestamp: `2026-08-22T03:36:41Z`; local retrieval timestamp:
@@ -58,20 +62,30 @@ inputs and results:
 - Tools: Python 3.13.12, GDAL 3.12.3, and PROJ 9.8.1.
 - Selected input: 4,722 features and 4,725 polygons after the safely margined spatial
   selection.
-- Output: one valid WGS84 MultiPolygon, 1,052,107 bytes, covering 58,001.174 km² with
-  bounds `[11.405766, 39.0, 20.7, 45.80457]`.
-- Output SHA-256:
-  `e9154b7d1f1f1fd23c5b54c9e88e39f35f8d5f78ad42bd309645a73afcb29c05`.
-- Automated source-to-output review: 252 regional grid classifications with zero
-  mismatches, three open-sea samples, two land samples, one Dalmatian corridor sample,
-  and a retained coastal zone around a roughly 0.01 km² source islet.
-- Visual geometry review: full-region raster inspection covered the northern and
-  southern Adriatic, both coasts, island-dense zones, open-sea gaps, and output edges;
-  no obvious clipping-edge or land-fill artefacts were found.
+- Output: five valid WGS84 MultiPolygons totaling 5,354,919 bytes:
 
-The authoritative machine-readable record is `data/generated/metadata.json`. The
-generated overlay is accompanied by `data/generated/NOTICE.md` and remains governed
-by ODbL 1.0.
+  | Distance | Area (km²) | Bytes | SHA-256 |
+  | --- | ---: | ---: | --- |
+  | 1 NM | 14,049.202 | 1,160,648 | `c62e4c08b5d66bd2cecb344991daae5cd6aaccf77fc7456bb7eacb498430dc49` |
+  | 3 NM | 34,090.783 | 1,083,500 | `58b874a91695710c63a56ae944d1bbf45734a6935beb63d087d28e7ba788294c` |
+  | 6 NM | 58,001.174 | 1,052,107 | `e9154b7d1f1f1fd23c5b54c9e88e39f35f8d5f78ad42bd309645a73afcb29c05` |
+  | 12 NM | 99,073.399 | 1,034,570 | `23b8b2f76f09adce8ec70f1ec6f1c6537321305f55af094e750e5bf01048c14e` |
+  | 20 NM | 143,908.576 | 1,024,094 | `bc7ef2332dfa6c0af966ffd1291b6d130cfed91e1bb9d6af0951265a32ebb443` |
+
+- Automated source-to-output review: 1,258 regional grid classifications across the
+  five outputs, two additional points skipped within the configured boundary
+  tolerance, and zero mismatches. Each output also passed three marine samples, two
+  land samples, one Dalmatian corridor sample, and retention of a coastal zone around
+  a roughly 0.01 km² source islet.
+- Earlier visual geometry review of the unchanged 6 NM output covered the northern
+  and southern Adriatic, both coasts, island-dense zones, open-sea gaps, and output
+  edges; no obvious clipping-edge or land-fill artefacts were found. The new selector
+  and the other four outputs remain on the 0.2.0 manual browser checklist.
+
+The authoritative machine-readable records are `data/generated/metadata.json` for
+6 NM and `data/generated/adriatic_DISTANCEnm.metadata.json` for the other distances.
+`data/generated/overlays.json` is the runtime catalog. The generated overlays are
+accompanied by `data/generated/NOTICE.md` and remain governed by ODbL 1.0.
 
 The 925 MB archive remains locally reusable at the ignored project path
 `data/raw/land-polygons-split-4326.zip`; it was not downloaded to or removed from a
@@ -92,15 +106,11 @@ part of the land-polygon source. Other OSM tags are semantically mixed: `natural
 is often a point for attached exposed rock, while seamark rock tags can describe dry,
 awash, or submerged hazards. Counting every such object as land would be incorrect.
 
-Recommendation for v1: keep coastline-derived land authoritative and treat additional
-rock extraction as an optional, separate layer. If included, define and test an
-explicit allow-list of tags proving the feature is exposed above the relevant water
-level; preserve source IDs/tags for audit; never silently combine submerged/ambiguous
-features into the land layer.
-
-For a later reproducible extraction, use a bounded OSM data snapshot (for example,
-documented Geofabrik regional extracts) or a deliberately bounded one-time query.
-The runtime application must never query Overpass for this data.
+The accepted coastline geometry already gives the intended result, so a separate rock
+or seamark layer is deliberately not planned. If that decision is ever reversed, it
+must use an explicit allow-list proving features are exposed above the relevant water
+level, preserve source IDs/tags for audit, and never silently combine submerged or
+ambiguous hazards into the land layer. Runtime Overpass queries remain out of scope.
 
 ## Basemap
 
@@ -133,3 +143,16 @@ documented regional display bounds.
 The overlay is an informational visualization. It is not certified and must not be
 used for navigation, route planning, legal-distance determinations, or as a substitute
 for official nautical data.
+
+Point inspection performs containment checks against the five simplified precomputed
+overlays. It reports only a band such as “more than 3 NM and within 6 NM”; it does not
+calculate an exact distance. A point outside all overlays is ambiguous: it may be more
+than 20 NM from mapped land, on land, or outside the configured region.
+
+The preset values correspond to navigation-area distances in Article 37 of Croatia's
+applicable boat and yacht regulation, as listed by the
+[Croatian Ministry](https://mmpi.gov.hr/more-86/upisnik-brodova-republike-hrvatske/upute-za-upis/pravni-izvori-24663/upis-plovila/25288)
+and published in the
+[Official Gazette](https://narodne-novine.nn.hr/clanci/sluzbeni/2020_01_13_223.html).
+The application does not determine which band applies to any vessel or person; users
+must consult current official documents and requirements.

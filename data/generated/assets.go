@@ -2,7 +2,7 @@ package generateddata
 
 import "embed"
 
-// Assets contains the reviewed runtime overlay and its generation metadata.
+// Assets contains the reviewed runtime overlays and their generation metadata.
 //
-//go:embed adriatic_6nm.geojson metadata.json NOTICE.md
+//go:embed *.geojson *.json NOTICE.md
 var Assets embed.FS

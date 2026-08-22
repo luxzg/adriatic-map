@@ -21,7 +21,29 @@
         <span class="distance-badge">6 NM</span>
       </div>
 
-      <div class="control-row overlay-control">
+      <div class="option-grid control-row">
+        <label class="field-label" for="distance-select">
+          <span>Distance limit</span>
+          <select id="distance-select">
+            <option value="1">1 NM</option>
+            <option value="3">3 NM</option>
+            <option value="6" selected>6 NM</option>
+            <option value="12">12 NM</option>
+            <option value="20">20 NM</option>
+          </select>
+        </label>
+
+        <div class="field-label">
+          <span id="color-label">Overlay color</span>
+          <div class="color-inputs" aria-labelledby="color-label">
+            <input id="overlay-color" type="color" value="#f59e0b" aria-label="Choose overlay color">
+            <input id="overlay-color-hex" type="text" value="#f59e0b" maxlength="7" spellcheck="false" aria-label="Overlay color hex value" aria-describedby="color-error">
+          </div>
+          <span id="color-error" class="validation-message" hidden>Enter six hexadecimal digits.</span>
+        </div>
+      </div>
+
+      <div class="overlay-control">
         <label class="toggle-label" for="overlay-toggle">
           <input id="overlay-toggle" type="checkbox" checked>
           <span>Show coastal zone</span>
@@ -40,11 +62,14 @@
         <button id="view-dalmatia" type="button">Dalmatia</button>
       </div>
 
+      <button id="inspect-toggle" class="inspect-button" type="button" aria-pressed="false">Inspect point: off</button>
+      <p id="inspect-result" class="inspect-result" aria-live="polite">Inspection is off.</p>
+
       <p id="overlay-status" class="status-message" role="status" aria-live="polite">Loading coastal zone…</p>
       <details class="map-info">
         <summary>Data and accuracy</summary>
         <p id="data-summary">Loading generation metadata…</p>
-        <p>OpenStreetMap-derived geometry is for informational visualization only.</p>
+        <p>The distance presets match bands used by Croatian navigation-area rules. This visualization does not determine legal eligibility.</p>
         <p>
           <a href="/data/NOTICE.md" target="_blank" rel="noopener">Data license notice</a>
           ·
@@ -59,6 +84,7 @@
   </main>
 
   <script src="/vendor/leaflet/leaflet.js"></script>
+  <script src="/map-tools.js"></script>
   <script src="/app.js"></script>
 </body>
 </html>

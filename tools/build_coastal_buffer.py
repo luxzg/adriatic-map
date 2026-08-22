@@ -309,12 +309,13 @@ def write_geojson(
     buffer_nautical_miles: float,
     buffer_metres: float,
 ) -> None:
+    distance_token = format(buffer_nautical_miles, "g").replace(".", "_")
     geometry_json = json.loads(
         geometry.ExportToJson(["COORDINATE_PRECISION=6"])
     )
     document = {
         "type": "FeatureCollection",
-        "name": "adriatic_6nm",
+        "name": f"adriatic_{distance_token}nm",
         "features": [
             {
                 "type": "Feature",

@@ -2,32 +2,35 @@
 
 Adriatic Map is a small cross-platform web application for exploring the
 parts of the Adriatic Sea that are within a mathematically calculated distance of
-the nearest exposed land. The first target is **6 nautical miles (11,112 metres)**
-from mainland coasts, islands, and islets represented in published geographic data.
+the nearest exposed land. It provides precomputed **1, 3, 6, 12, and 20 nautical
+mile** choices from mainland coasts, islands, and islets represented in published
+geographic data.
 
 > **Informational visualization only. Not an official nautical chart or a substitute
 > for official navigational data.**
 
 ## Status
 
-Version 0.1.2 provides the complete first prototype: the tested local application,
-the reviewed 6 NM overlay generated from OSM-derived coastline land polygons, and the
-reproducible Python/GDAL pipeline used to build and validate it. See
+Version 0.2.0 adds all five reviewed distance overlays, user-selectable overlay color,
+and an opt-in point inspector to the tested local application and reproducible
+Python/GDAL pipeline. See
 [PROJECT_OUTLINE.md](PROJECT_OUTLINE.md) for the v1 scope and [docs/DATA.md](docs/DATA.md)
 for the exact data method and limitations.
 
 ## Included in v1
 
 - Interactive Adriatic map with pan and zoom.
-- A precomputed, merged 6 NM coastal-distance overlay.
-- Overlay visibility and opacity controls.
+- Precomputed, merged 1/3/6/12/20 NM coastal-distance overlays.
+- Distance selection plus overlay visibility, opacity, color-picker, and hex controls.
+- Point inspection that is off by default and reports an approximate precomputed
+  distance band only when enabled.
 - Quick views for the full Adriatic and Dalmatia.
 - Detailed OSM-derived mainland, island, and islet geometry.
 - Reproducible offline preprocessing; no large live Overpass request at startup.
 - Linux and Windows operation without a database.
 
 The application is a tiny Go executable that serves an embedded local Leaflet
-frontend and prepared overlay. A separate Python GIS tool regenerates the overlay;
+frontend and prepared overlays. A separate Python GIS tool regenerates the overlays;
 end users do not need Python or GIS packages.
 
 ## Data and attribution
@@ -80,13 +83,14 @@ On Windows PowerShell with Go installed:
 .\dist\adriatic-map-windows-amd64.exe
 ```
 
-Release binaries contain the UI and overlay data and require no database or Python.
+Release binaries contain the UI and all five overlay datasets and require no database
+or Python.
 The basemap requires internet access. Planning and deeper setup are documented in
 [PROJECT_SETUP.md](PROJECT_SETUP.md).
 
 ## Regenerate geographic data
 
-End users do not need GIS software. Maintainers regenerating the overlay need Python
+End users do not need GIS software. Maintainers regenerating the overlays need Python
 3, GDAL command-line tools and Python bindings, `curl`, and about 1 GB for the ignored
 source archive:
 
@@ -107,14 +111,27 @@ The 925 MB raw archive is stored inside this project at
 `data/raw/land-polygons-split-4326.zip`, not in a temporary directory. It remains
 available locally for reuse but is deliberately ignored by Git. The tracked
 [raw-data guide](data/raw/README.md) records its URL, timestamps, exact byte size,
-SHA-256, format, license, and rolling-snapshot caveat. The reviewed 1.1 MB derived
-overlay under `data/generated/` is intentionally tracked and is not a placeholder.
+SHA-256, format, license, and rolling-snapshot caveat. The five reviewed derived
+overlays total about 5.4 MB under `data/generated/`; they are intentionally tracked
+and are not placeholders.
 
-## Possible follow-up features
+## Distance presets and legal context
 
-The current requested follow-ups are an overlay color control and additional
-precomputed distance choices. Other original optional ideas remain documented in
-[PROJECT_OUTLINE.md](PROJECT_OUTLINE.md) and summarized in [TODO.md](TODO.md).
+The chosen bands match distance limits used for Croatian boat and yacht navigation
+areas in Article 37 of the applicable regulation. The Croatian Ministry currently
+lists the base regulation and its amendment as official sources:
+
+- [Official Croatian Ministry legal-source listing](https://mmpi.gov.hr/more-86/upisnik-brodova-republike-hrvatske/upute-za-upis/pravni-izvori-24663/upis-plovila/25288)
+- [Official Gazette regulation, Article 37](https://narodne-novine.nn.hr/clanci/sluzbeni/2020_01_13_223.html)
+- [Official Gazette 2020 amendment](https://narodne-novine.nn.hr/clanci/sluzbeni/full/2020_04_52_1047.html)
+
+This map does not establish which limit applies to a vessel or skipper. Registration,
+technical category, issued documents, qualifications, weather/time restrictions,
+local rules, and current official sources must be checked separately.
+
+Inspection reports a band such as “more than 3 NM and within 6 NM,” not an exact
+distance. A point outside every marine overlay may be more than 20 NM from mapped
+land, on land, or outside the covered region.
 
 ## AI assistance
 

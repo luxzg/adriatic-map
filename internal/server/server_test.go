@@ -33,10 +33,15 @@ func TestEmbeddedApplicationFiles(t *testing.T) {
 	}{
 		{path: "/", contentType: "text/html", contains: "Adriatic Map"},
 		{path: "/app.js", contentType: "text/javascript", contains: "tile.openstreetmap.org"},
+		{path: "/map-tools.js", contentType: "text/javascript", contains: "classifyDistanceBand"},
 		{path: "/style.css", contentType: "text/css", contains: "--overlay-color"},
 		{path: "/vendor/leaflet/leaflet.js", contentType: "text/javascript", contains: "Leaflet"},
+		{path: "/data/overlays.json", contentType: "application/json", contains: "default_nautical_miles"},
+		{path: "/data/adriatic_1nm.geojson", contentType: "application/geo+json", contains: "adriatic_1nm"},
 		{path: "/data/adriatic_6nm.geojson", contentType: "application/geo+json", contains: "FeatureCollection"},
+		{path: "/data/adriatic_20nm.geojson", contentType: "application/geo+json", contains: "adriatic_20nm"},
 		{path: "/data/metadata.json", contentType: "application/json", contains: "11112"},
+		{path: "/data/adriatic_20nm.metadata.json", contentType: "application/json", contains: "37040"},
 		{path: "/data/NOTICE.md", contentType: "text/markdown", contains: "ODbL 1.0"},
 	}
 
@@ -56,6 +61,22 @@ func TestEmbeddedApplicationFiles(t *testing.T) {
 				t.Fatalf("response does not contain %q", test.contains)
 			}
 		})
+	}
+}
+
+func TestInspectionIsOffByDefault(t *testing.T) {
+	request := httptest.NewRequest(http.MethodGet, "/", nil)
+	response := httptest.NewRecorder()
+	New(Config{Version: "test-version"}).ServeHTTP(response, request)
+
+	if response.Code != http.StatusOK {
+		t.Fatalf("status = %d, want %d", response.Code, http.StatusOK)
+	}
+	body := response.Body.String()
+	if !strings.Contains(body, `id="inspect-toggle"`) ||
+		!strings.Contains(body, `aria-pressed="false"`) ||
+		!strings.Contains(body, "Inspect point: off") {
+		t.Fatal("inspection control is not rendered off by default")
 	}
 }
 

@@ -27,6 +27,7 @@ timestamp, size, and checksum; record those new values rather than claiming it i
 processing versions for the reviewed output are in `../generated/metadata.json`, with
 the complete method in `../../docs/DATA.md`.
 
-The reviewed derived runtime overlay is intentionally tracked at
-`../generated/adriatic_6nm.geojson` because it is only about 1.1 MB. It is actual data,
-not a placeholder, and remains governed by the adjacent ODbL notice.
+The five reviewed derived runtime overlays are intentionally tracked under
+`../generated/` because they total only 5,354,919 bytes (about 5.4 MB). They are actual
+data, not placeholders, and remain governed by the adjacent ODbL notice. The files and
+their metadata are enumerated by `../generated/overlays.json`.

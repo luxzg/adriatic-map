@@ -9,6 +9,7 @@ import unittest
 from osgeo import gdal, ogr
 
 from tools import build_coastal_buffer as coastal
+from tools import validate_generated_overlay as overlay_validation
 
 
 def polygon_with_hole() -> ogr.Geometry:
@@ -28,8 +29,15 @@ class CoastalBufferTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         gdal.UseExceptions()
 
-    def test_six_nautical_miles_is_exactly_11112_metres(self) -> None:
-        self.assertEqual(coastal.DEFAULT_BUFFER_METRES, 11112.0)
+    def test_supported_nautical_miles_convert_to_exact_metres(self) -> None:
+        expected = {1: 1852, 3: 5556, 6: 11112, 12: 22224, 20: 37040}
+        for nautical_miles, metres in expected.items():
+            with self.subTest(nautical_miles=nautical_miles):
+                self.assertEqual(
+                    nautical_miles * coastal.NAUTICAL_MILE_METRES,
+                    metres,
+                )
+        self.assertEqual(coastal.DEFAULT_BUFFER_METRES, expected[6])
 
     def test_inner_rings_are_filled_before_buffering(self) -> None:
         filled = coastal.without_inner_rings(polygon_with_hole())
@@ -60,6 +68,17 @@ class CoastalBufferTests(unittest.TestCase):
     def test_projection_distortion_is_below_half_percent(self) -> None:
         self.assertLess(coastal.relative_projection_error_percent(), 0.5)
 
+    def test_expected_marine_coverage_respects_buffer_and_tolerance(self) -> None:
+        self.assertTrue(
+            overlay_validation.expected_marine_coverage(1000, 1852, 100)
+        )
+        self.assertFalse(
+            overlay_validation.expected_marine_coverage(3000, 1852, 100)
+        )
+        self.assertIsNone(
+            overlay_validation.expected_marine_coverage(1900, 1852, 100)
+        )
+
     def test_geojson_writer_emits_licensed_feature_collection(self) -> None:
         geometry = ogr.CreateGeometryFromWkt(
             "POLYGON ((15 43, 15.1 43, 15.1 43.1, 15 43.1, 15 43))"
@@ -71,8 +90,20 @@ class CoastalBufferTests(unittest.TestCase):
         self.assertEqual(document["type"], "FeatureCollection")
         self.assertEqual(len(document["features"]), 1)
         properties = document["features"][0]["properties"]
+        self.assertEqual(document["name"], "adriatic_6nm")
         self.assertEqual(properties["distance_m"], 11112)
         self.assertEqual(properties["license"], "ODbL-1.0")
+
+    def test_geojson_name_follows_the_buffer_distance(self) -> None:
+        geometry = ogr.CreateGeometryFromWkt(
+            "POLYGON ((15 43, 15.1 43, 15.1 43.1, 15 43.1, 15 43))"
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "overlay.geojson"
+            coastal.write_geojson(output, geometry, 12, 22224)
+            document = json.loads(output.read_text(encoding="utf-8"))
+        self.assertEqual(document["name"], "adriatic_12nm")
+        self.assertEqual(document["features"][0]["properties"]["distance_nm"], 12)
 
     def test_metadata_records_source_provenance_and_tool_versions(self) -> None:
         statistics = coastal.BuildStatistics(

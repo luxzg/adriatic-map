@@ -1,0 +1,35 @@
+{
+  "default_nautical_miles": 6,
+  "overlays": [
+    {
+      "nautical_miles": 1,
+      "metres": 1852,
+      "geojson": "/data/adriatic_1nm.geojson",
+      "metadata": "/data/adriatic_1nm.metadata.json"
+    },
+    {
+      "nautical_miles": 3,
+      "metres": 5556,
+      "geojson": "/data/adriatic_3nm.geojson",
+      "metadata": "/data/adriatic_3nm.metadata.json"
+    },
+    {
+      "nautical_miles": 6,
+      "metres": 11112,
+      "geojson": "/data/adriatic_6nm.geojson",
+      "metadata": "/data/metadata.json"
+    },
+    {
+      "nautical_miles": 12,
+      "metres": 22224,
+      "geojson": "/data/adriatic_12nm.geojson",
+      "metadata": "/data/adriatic_12nm.metadata.json"
+    },
+    {
+      "nautical_miles": 20,
+      "metres": 37040,
+      "geojson": "/data/adriatic_20nm.geojson",
+      "metadata": "/data/adriatic_20nm.metadata.json"
+    }
+  ]
+}

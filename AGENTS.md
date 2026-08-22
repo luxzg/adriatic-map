@@ -29,11 +29,23 @@ override these files.
 
 ## Approved implementation direction
 
-The planning gate was cleared by the user on 2026-08-22. Implement the non-optional
-v1 scope using a tiny Go server with an embedded Leaflet UI and reviewed generated
-data, plus a maintainer-only Python/GDAL GIS tool. Use normal viewport-only online
-OSM basemap tiles, keep coastline-derived land authoritative in v1, and keep raw
-downloads and intermediates out of Git.
+The planning gate was cleared by the user on 2026-08-22. Use a tiny Go server with an
+embedded Leaflet UI and reviewed generated data, plus a maintainer-only Python/GDAL
+GIS tool. The supported precomputed choices are exactly `1/3/6/12/20 NM`, with 6 NM
+as the default. Use normal viewport-only online OSM basemap tiles, keep
+coastline-derived land authoritative, and keep raw downloads and intermediates out of
+Git.
+
+The overlay color is user-selectable. Point inspection must be an explicit toggle,
+off by default; it reports only the precomputed distance band and selected-zone
+classification. It must not imply an exact surveyed distance or legal determination.
+The distance choices correspond to bands used in current Croatian navigation-area
+rules, but vessel documents, qualifications, additional restrictions, and official
+current sources remain authoritative.
+
+Do not add a separate rock layer, offline basemap, multiple detail levels/vector tiles,
+dynamic data updates, or a database unless the user explicitly reverses the current
+decision. The accepted coastline overlay is adequate and the project must stay simple.
 
 ## Public-repository and data safety
 
@@ -48,7 +60,8 @@ downloads and intermediates out of Git.
   and output statistics as described in `docs/DATA.md`.
 - Do not treat image, viewport, extract, country, or clipping boundaries as land.
 - Do not treat submerged rocks, reefs, or freshwater shorelines as exposed marine
-  land. Preserve optional rock inputs as a separate identifiable layer.
+  land. If the current no-rock-layer decision is ever reversed, preserve any such
+  inputs as a separate identifiable layer.
 
 ## Engineering workflow
 
@@ -73,8 +86,9 @@ Current application commands:
 - Test and vet: `./scripts/test.sh`
 - Test only the GIS pipeline: `./scripts/test-gis.sh`
 - Download the ignored land source: `./scripts/download-data.sh`
-- Generate the reviewed overlay: `./scripts/generate-data.sh "<source timestamp>"`
-- Validate generated data against the local raw source: `./scripts/validate-data.sh`
+- Generate all reviewed overlays: `./scripts/generate-data.sh "<source timestamp>"`
+- Validate one distance against the local raw source:
+  `./scripts/validate-data.sh <1|3|6|12|20>`
 - Build Linux and Windows release binaries: `./scripts/build-release.sh`
 - Run from source: `./scripts/run.sh`
 - Run on a chosen loopback port: `./scripts/run.sh -listen 127.0.0.1:<port>`
@@ -113,8 +127,9 @@ Current application commands:
   directory. It is intentionally ignored and must not be staged. Its provenance,
   checksum, versions, and rolling-source limitation are documented in
   `data/raw/README.md`, `docs/DATA.md`, and generated metadata.
-- `data/generated/adriatic_6nm.geojson` is not a placeholder. It is the reviewed,
-  tracked 1.1 MB ODbL-derived runtime overlay. Keep its notice and metadata beside it.
+- The `data/generated/adriatic_*nm.geojson` files are not placeholders. They are the
+  reviewed, tracked ODbL-derived runtime overlays. Keep their notice, catalog, and
+  metadata beside them.
 
 ## Git workflow
 

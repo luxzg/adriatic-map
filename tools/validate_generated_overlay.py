@@ -14,7 +14,7 @@ from osgeo import gdal, ogr
 from tools import build_coastal_buffer as coastal
 
 CORRIDOR_SAMPLE = (16.27, 43.12)
-OPEN_SEA_SAMPLES = (
+MARINE_SAMPLES = (
     (15.0, 42.5),
     (13.5, 44.0),
     (18.5, 41.0),
@@ -54,6 +54,16 @@ def covered(geometry: ogr.Geometry, sample: ogr.Geometry) -> bool:
     return bool(geometry.Contains(sample) or geometry.Intersects(sample))
 
 
+def expected_marine_coverage(
+    distance_metres: float,
+    buffer_metres: float,
+    tolerance_metres: float,
+) -> bool | None:
+    if abs(distance_metres - buffer_metres) <= tolerance_metres:
+        return None
+    return distance_metres < buffer_metres
+
+
 def validate_classifications(
     land_wgs84: ogr.Geometry,
     overlay_wgs84: ogr.Geometry,
@@ -72,23 +82,38 @@ def validate_classifications(
     corridor = point(*CORRIDOR_SAMPLE)
     corridor_metric = coastal.transformed(corridor, wgs84, metric)
     corridor_distance = land_metric.Distance(corridor_metric)
-    if not covered(overlay_wgs84, corridor):
-        raise ValueError("the required Dalmatian corridor sample is not covered")
-    if corridor_distance > buffer_metres + tolerance_metres:
-        raise ValueError("the corridor sample is farther than the configured buffer")
+    corridor_covered = covered(overlay_wgs84, corridor)
+    corridor_expected = expected_marine_coverage(
+        corridor_distance,
+        buffer_metres,
+        tolerance_metres,
+    )
+    if corridor_expected is not None and corridor_covered != corridor_expected:
+        raise ValueError("the Dalmatian corridor classification is incorrect")
 
-    for longitude, latitude in OPEN_SEA_SAMPLES:
+    marine_samples = []
+    for longitude, latitude in MARINE_SAMPLES:
         sample = point(longitude, latitude)
         sample_metric = coastal.transformed(sample, wgs84, metric)
         distance = land_metric.Distance(sample_metric)
-        if covered(overlay_wgs84, sample):
+        actual = covered(overlay_wgs84, sample)
+        expected = expected_marine_coverage(
+            distance,
+            buffer_metres,
+            tolerance_metres,
+        )
+        if expected is not None and actual != expected:
             raise ValueError(
-                f"open-sea sample ({longitude}, {latitude}) is unexpectedly covered"
+                f"marine sample ({longitude}, {latitude}) classification is incorrect"
             )
-        if distance <= buffer_metres + tolerance_metres:
-            raise ValueError(
-                f"open-sea sample ({longitude}, {latitude}) is too close to land"
-            )
+        marine_samples.append(
+            {
+                "longitude": longitude,
+                "latitude": latitude,
+                "nearest_land_metres_projected": round(distance, 3),
+                "covered": actual,
+            }
+        )
 
     land_sample = point(*LAND_SAMPLE)
     land_sample_metric = coastal.transformed(land_sample, wgs84, metric)
@@ -154,9 +179,9 @@ def validate_classifications(
             "longitude": CORRIDOR_SAMPLE[0],
             "latitude": CORRIDOR_SAMPLE[1],
             "nearest_land_metres_projected": round(corridor_distance, 3),
-            "covered": True,
+            "covered": corridor_covered,
         },
-        "open_sea_samples": len(OPEN_SEA_SAMPLES),
+        "marine_samples": marine_samples,
         "land_samples": 2,
         "small_islet_sample": {
             "land": {
@@ -197,8 +222,10 @@ def main(argv: list[str] | None = None) -> int:
     metadata = json.loads(arguments.metadata.read_text(encoding="utf-8"))
     if coastal.sha256_file(arguments.source) != metadata["source_sha256"]:
         raise ValueError("source checksum does not match generation metadata")
-    if metadata["buffer_metres"] != coastal.DEFAULT_BUFFER_METRES:
-        raise ValueError("metadata does not contain the required 11,112 m buffer")
+    buffer_nautical_miles = float(metadata["buffer_nautical_miles"])
+    expected_buffer_metres = buffer_nautical_miles * coastal.NAUTICAL_MILE_METRES
+    if float(metadata["buffer_metres"]) != expected_buffer_metres:
+        raise ValueError("metadata nautical-mile and metre distances disagree")
 
     land, feature_count, polygon_count = coastal.load_land_geometry(arguments.source)
     if feature_count != metadata["source_features"]:
@@ -236,7 +263,8 @@ def main(argv: list[str] | None = None) -> int:
             )
             destination.write("\n")
     print(
-        f"validated {validation['grid_points_checked']} grid points with "
+        f"validated {buffer_nautical_miles:g} NM across "
+        f"{validation['grid_points_checked']} grid points with "
         f"{validation['grid_mismatches']} mismatches"
     )
     return 0

@@ -1,6 +1,7 @@
 # OSM-derived data notice
 
-`adriatic_6nm.geojson` is derived from OpenStreetMap coastline land polygons.
+The `adriatic_*nm.geojson` overlays are derived from OpenStreetMap coastline land
+polygons.
 
 - Copyright: © OpenStreetMap contributors
 - License: Open Data Commons Open Database License 1.0 (ODbL 1.0)

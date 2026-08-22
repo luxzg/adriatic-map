@@ -1,16 +1,16 @@
 {
   "attribution": "© OpenStreetMap contributors",
-  "buffer_metres": 11112.0,
-  "buffer_nautical_miles": 6.0,
+  "buffer_metres": 1852.0,
+  "buffer_nautical_miles": 1.0,
   "buffer_quadrant_segments": 24,
   "coordinate_precision_degrees": 1e-06,
   "generated": true,
-  "generated_at": "2026-08-22T17:50:04+00:00",
+  "generated_at": "2026-08-22T17:47:21+00:00",
   "metric_crs_proj4": "+proj=aeqd +lat_0=43 +lon_0=16 +datum=WGS84 +units=m +no_defs +type=crs",
   "navigation_use": false,
-  "output_area_square_kilometres": 58001.174,
+  "output_area_square_kilometres": 14049.202,
   "output_bounds": [
-    11.405766,
+    11.405793,
     39.0,
     20.7,
     45.80457
@@ -32,11 +32,11 @@
     "proj": "9.8.1",
     "python": "3.13.12"
   },
-  "validated_at": "2026-08-22T17:50:24+00:00",
+  "validated_at": "2026-08-22T17:47:40+00:00",
   "validation": {
-    "classification_tolerance_metres": 133.481,
+    "classification_tolerance_metres": 126.414,
     "corridor_sample": {
-      "covered": true,
+      "covered": false,
       "latitude": 43.12,
       "longitude": 16.27,
       "nearest_land_metres_projected": 5271.719

@@ -49,17 +49,26 @@ curl --fail --silent --show-error "${application_url}healthz" \
     --output "$temporary_directory/health.json"
 curl --fail --silent --show-error "$application_url" \
     --output "$temporary_directory/index.html"
-curl --fail --silent --show-error "${application_url}data/adriatic_6nm.geojson" \
-    --output "$temporary_directory/adriatic_6nm.geojson"
 curl --fail --silent --show-error "${application_url}data/metadata.json" \
     --output "$temporary_directory/metadata.json"
+curl --fail --silent --show-error "${application_url}data/overlays.json" \
+    --output "$temporary_directory/overlays.json"
 curl --fail --silent --show-error "${application_url}data/NOTICE.md" \
     --output "$temporary_directory/NOTICE.md"
 
 grep -F '"status":"ok"' "$temporary_directory/health.json" >/dev/null
 grep -F 'Informational visualization only.' "$temporary_directory/index.html" >/dev/null
 grep -F '"generated": true' "$temporary_directory/metadata.json" >/dev/null
+grep -F '"default_nautical_miles": 6' "$temporary_directory/overlays.json" >/dev/null
 grep -F 'ODbL 1.0' "$temporary_directory/NOTICE.md" >/dev/null
-cmp data/generated/adriatic_6nm.geojson "$temporary_directory/adriatic_6nm.geojson"
+
+for distance_nm in 1 3 6 12 20; do
+    curl --fail --silent --show-error \
+        "${application_url}data/adriatic_${distance_nm}nm.geojson" \
+        --output "$temporary_directory/adriatic_${distance_nm}nm.geojson"
+    cmp \
+        "data/generated/adriatic_${distance_nm}nm.geojson" \
+        "$temporary_directory/adriatic_${distance_nm}nm.geojson"
+done
 
 echo "smoke test passed at $application_url"

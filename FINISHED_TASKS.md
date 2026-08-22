@@ -86,7 +86,26 @@ a status record, not a duplicate of the chronological changelog.
   invocation, arbitrary/free ports, and standardized commands with diagnostic-only
   exceptions.
 
-## Deferred by scope
+### 2026-08-22 — Distance, color, and inspection controls 0.2.0
 
-- Configurable/multiple buffer distances, point inspection, vector tiles, and offline
-  basemaps are post-v1 possibilities, not active implementation work.
+- Generated and source-validated independent 1/3/6/12/20 NM overlays from the same
+  reviewed coastline snapshot, totaling 5,354,919 tracked bytes.
+- Added a distance selector with 6 NM as the default and lazy per-distance loading.
+- Added synchronized native color-picker and validated six-digit hex controls.
+- Added a point inspector that is disabled by default and classifies clicks into
+  approximate precomputed bands only while explicitly enabled.
+- Added reusable GeoJSON containment utilities and automated polygon, hole, boundary,
+  real-data band, manifest, endpoint, build, and runtime smoke coverage.
+- Documented the Croatian regulatory context without claiming the map can establish
+  the legal limit applicable to a vessel, skipper, or voyage.
+
+## Deliberately not planned
+
+- A separate rock/seamark layer, because the accepted coastline polygons already
+  provide the intended land definition and mixed hazard semantics add complexity.
+- Offline basemap packaging, because normal viewport-only OSM tile access meets the
+  intended connected local use without a large tile archive.
+- Multiple detail levels or vector tiles, because the compact GeoJSON overlays already
+  perform adequately.
+- Dynamic source updates or a database, because the reviewed static snapshot and
+  reproducible offline generation cover the intended use.
