@@ -1,0 +1,51 @@
+# Private/local configuration and credentials
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+credentials.*
+secrets.*
+
+# Operating-system and editor state
+.DS_Store
+Thumbs.db
+Desktop.ini
+*~
+*.swp
+.idea/
+.vscode/
+
+# Go build/test output
+bin/
+build/
+dist/
+*.exe
+*.test
+coverage.out
+
+# Python GIS tooling: local environments, caches, and reports
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Downloaded/raw geographic data and reproducible intermediates
+data/raw/
+data/work/
+data/tmp/
+
+# Local logs and temporary files
+*.log
+tmp/
+temp/
+
+# Intentionally do not ignore data/generated/: reviewed, reasonably sized
+# generated overlays are expected to be public release inputs.
